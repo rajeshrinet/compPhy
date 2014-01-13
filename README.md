@@ -1,5 +1,6 @@
 # pyTutorials
 
+[Basics](http://nbviewer.ipython.org/gist/rajeshrinet/6fc4e4f5caa59a6a1995)
 
 [Plotting deformations](http://nbviewer.ipython.org/gist/rajeshrinet/8351652)
 
