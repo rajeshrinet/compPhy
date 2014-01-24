@@ -2,7 +2,7 @@
 
 [Tutorial #1](http://nbviewer.ipython.org/gist/rajeshrinet/a1dd02f1920974b830ab)
 
-[Tutorial #1](http://nbviewer.ipython.org/gist/rajeshrinet/a1dd02f1920974b830ab)
+[Tutorial #2](http://nbviewer.ipython.org/gist/jitAbhra/8594055)
 
 
 
