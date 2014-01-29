@@ -5,6 +5,7 @@
 [Tutorial #2](http://nbviewer.ipython.org/gist/jitAbhra/8594055)
 
 
+[Tutorial #3](http://nbviewer.ipython.org/gist/jitAbhra/8682833)
 
 ------------------------------------
 
