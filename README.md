@@ -1,14 +1,14 @@
 # pyTutorials
 
-[Tutorial #1](http://nbviewer.ipython.org/gist/rajeshrinet/a1dd02f1920974b830ab): numpy and matplolib
+1. [Numpy and matplolib](http://nbviewer.ipython.org/gist/rajeshrinet/a1dd02f1920974b830ab): Rajesh Singh
 
-[Tutorial #2](http://nbviewer.ipython.org/gist/jitAbhra/8594055): tuples, dictionary and function
+2. [Functions and modules](http://nbviewer.ipython.org/gist/jitAbhra/8594055): Abhrajit Laskar
 
-[Tutorial #3](http://nbviewer.ipython.org/gist/jitAbhra/8682833): classes, objects and inheritance
+3. [Classes, objects and inheritance](http://nbviewer.ipython.org/gist/jitAbhra/8682833): Abhrajit Laskar 
 
-[Tutorial #4](http://nbviewer.ipython.org/gist/rajeshrinet/9af6e5e06aa4ce519ff1): central limit theorem
+4. [Central limit theorem](http://nbviewer.ipython.org/gist/rajeshrinet/9af6e5e06aa4ce519ff1): Rajesh Singh
 
-------------------------------------
+---
 
 
 
