@@ -8,6 +8,9 @@
 
 4. [Central limit theorem](http://nbviewer.ipython.org/gist/rajeshrinet/9af6e5e06aa4ce519ff1): Rajesh Singh
 
+5. [Random Walks]: Abhrajit Laskar
+
+6. [Monte carlo quadrature]: Reshu Singh
 ---
 
 
