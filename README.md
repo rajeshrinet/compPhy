@@ -8,6 +8,8 @@
 |20140204|Rajesh Singh           |[Central limit theorem](http://nbviewer.ipython.org/gist/rajeshrinet/9af6e5e06aa4ce519ff1)   |
 |20140211|Abhrajit Laskar        |Random Walks                                                                                 |
 |20140218|Reshu Singh            |Monte carlo quadrature                                                                       |  
+|20140225|Soumyadeep Bhattacharya|Monte carlo and Ising model                                                                  |  
+|20140304|Soumyadeep Bhattacharya|Monte carlo and lattice gauge theory                                                          |  
 
 
 
