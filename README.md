@@ -9,7 +9,7 @@
 |20140211|Abhrajit Laskar        |Random Walks                                                                                 |
 |20140218|Reshu Singh            |Monte carlo quadrature                                                                       |  
 |20140225|Soumyadeep Bhattacharya|Monte carlo and Ising model                                                                  |  
-|20140304|Soumyadeep Bhattacharya|Monte carlo and lattice gauge theory                                                          |  
+|20140304|Rajesh Singh           |[Solving ODEs](http://nbviewer.ipython.org/gist/rajeshrinet/bde976cd3e1f4a238cfa)            |  
 
 
 
