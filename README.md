@@ -10,6 +10,7 @@
 |20140218|Reshu Singh            |Monte carlo quadrature                                                                       |  
 |20140225|Soumyadeep Bhattacharya|Monte carlo and Ising model                                                                  |  
 |20140304|Rajesh Singh           |[Solving ODEs](http://nbviewer.ipython.org/gist/rajeshrinet/bde976cd3e1f4a238cfa)            |  
+|20140311|Ria Sain               |[Solving ODEs] - IVP                                                                         |  
 
 
 
