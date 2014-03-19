@@ -2,6 +2,8 @@
 
 |Date    |Speaker                | Topic                                                                                       |
 |--------|:---------------------:|:-------------------------------------------------------------------------------------------:|
+|20140325|Rajesh Singh           |Cython                                                                                       |  
+|20140318|Soumyadeep Bhattacharya|Lattice field theory                                                                         |  
 |20140311|Ria Sain               |[ODEs - 2](http://nbviewer.ipython.org/gist/rajeshrinet/ae235e2edaa4bcfc6c02)                |  
 |20140304|Rajesh Singh           |[ODEs - 1](http://nbviewer.ipython.org/gist/rajeshrinet/bde976cd3e1f4a238cfa)                |  
 |20140225|Soumyadeep Bhattacharya|Monte carlo and Ising model                                                                  |  
