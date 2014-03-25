@@ -1,4 +1,4 @@
-void c_multiply (double* A, double* B, double* C, double multiplier, int m, int n) {
+void c_matMul (double* A, double* B, double* C, double multiplier, int m, int n) {
 
     int i, j ;
     int index = 0 ;
