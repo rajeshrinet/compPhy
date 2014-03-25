@@ -1,10 +1,10 @@
 
 PYTHON = ~/software/anaconda/bin/python
 
-all: multiply.so
+all: matMul.so
 
-multiply.so: multiply.pyx
+matMul.so: matMul.pyx
 	$(PYTHON) setup.py build_ext --inplace
 
 clean:
-	rm -rf build multiply.so multiply.c multiply.html 
+	rm -rf build matMul.so matMul.c matMul.html 
