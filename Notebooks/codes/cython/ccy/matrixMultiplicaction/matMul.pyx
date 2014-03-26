@@ -2,20 +2,20 @@ import cython
 import numpy as np
 cimport numpy as np
 
-cdef extern void c_matMul (double* array1, double* array2, double* array3, double value, int m, int n)
+cdef extern void c_matMul (double* A, double* B, double* C, double scalar_k, int m, int n)
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def multiply(np.ndarray[double, ndim=2, mode="c"] input1 not None, np.ndarray[double, ndim=2, mode="c"] input2 not None, np.ndarray[double, ndim=2, mode="c"] input3 not None, double value):
+def multiply(np.ndarray[double, ndim=2, mode="c"] A not None, np.ndarray[double, ndim=2, mode="c"] B not None, np.ndarray[double, ndim=2, mode="c"] C not None, double scalar_k):
     """
-    Pass A, B, C..
-    C = A*B
+    Pass A, B, C, k.. from outside
+    C = k*A*B
     Value of C is updated!
     """
     cdef int m, n
 
-    m, n = input1.shape[0], input1.shape[1]
-    c_matMul (&input1[0,0], &input2[0,0], &input3[0,0], value, m, n)
+    m, n = A.shape[0], B.shape[1]
+    c_matMul (&A[0,0], &B[0,0], &C[0,0], scalar_k, m, n)
 
     return None
 

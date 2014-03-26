@@ -1,16 +1,16 @@
 import numpy as np
 import matMul
 
-a = np.arange(9, dtype=np.float64).reshape((3, 3))
-b = np.arange(9, dtype=np.float64).reshape((3, 3))
-c = np.arange(9, dtype=np.float64).reshape((3, 3))
+A = np.arange(9, dtype=np.float64).reshape((3, 3))
+B = np.arange(9, dtype=np.float64).reshape((3, 3))
+C = np.arange(9, dtype=np.float64).reshape((3, 3))
 
-print c
+print C
 
 # Multiply using the function in C
-matMul.multiply(a, b, c,  3)
+matMul.multiply(A, B, C, 1)  # c = 1*a*b
 
 print
 print 'Updated value of the array is:'
 print
-print c
+print C
