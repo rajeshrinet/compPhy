@@ -6,7 +6,7 @@
 |Date    |Speaker                | Topic                                                                                       |
 |--------|:---------------------:|:-------------------------------------------------------------------------------------------:|
 |20140401|Minati Biswal          |Metastable states in lattice models                                                          |  
-|20140325|Rajesh Singh           |[Cython](http://nbviewer.ipython.org/gist/anonymous/c417e08d02c862d97e2a)                    |  
+|20140325|Rajesh Singh           |[Cython](http://nbviewer.ipython.org/gist/rajeshrinet/0aee56eadc7eef466f70)                  |  
 |20140318|Soumyadeep Bhattacharya|Lattice field theory                                                                         |  
 |20140311|Ria Sain               |[ODEs - 2](http://nbviewer.ipython.org/gist/rajeshrinet/ae235e2edaa4bcfc6c02)                |  
 |20140304|Rajesh Singh           |[ODEs - 1](http://nbviewer.ipython.org/gist/rajeshrinet/bde976cd3e1f4a238cfa)                |  
