@@ -9,7 +9,7 @@ Cython.Compiler.Options.annotate = True
 
 ext_modules = [
     Extension("matMul",
-              sources=["matMul.pyx", "c_matMul.c"],
+              sources=["matMul.pyx", "cMatMul.c"],
               include_dirs=[numpy.get_include()],
               extra_link_args=['-fopenmp'],
               libraries=[]), # Unix-like specific

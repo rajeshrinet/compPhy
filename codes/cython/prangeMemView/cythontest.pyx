@@ -2,8 +2,8 @@
 #
 # 20131223
 #               
-#             : This codes uses OpenMP multithreading
-#             : also it employs the concept of memory views 
+#             : this codes uses OpenMP multithreading
+#             : it also employs the concept of memory views 
 #
 
 

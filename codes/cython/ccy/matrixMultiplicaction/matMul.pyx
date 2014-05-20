@@ -2,7 +2,7 @@ import cython
 import numpy as np
 cimport numpy as np
 
-cdef extern void c_matMul (double* A, double* B, double* C, double scalar_k, int m, int n)
+cdef extern void cMatMul (double* A, double* B, double* C, double scalar_k, int m, int n)
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -15,7 +15,7 @@ def multiply(np.ndarray[double, ndim=2, mode="c"] A not None, np.ndarray[double,
     cdef int m, n
 
     m, n = A.shape[0], B.shape[1]
-    c_matMul (&A[0,0], &B[0,0], &C[0,0], scalar_k, m, n)
+    cMatMul (&A[0,0], &B[0,0], &C[0,0], scalar_k, m, n)
 
     return None
 

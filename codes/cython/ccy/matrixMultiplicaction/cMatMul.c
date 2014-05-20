@@ -1,4 +1,4 @@
-void c_matMul (double* A, double* B, double* C, double scalar_k, int m, int n) {
+void cMatMul (double* A, double* B, double* C, double scalar_k, int m, int n) {
 
     int i, j ;
     int index = 0 ;
