@@ -1,5 +1,11 @@
 // Dynamics memory allocation in C++ 
 // Motion of a turtle in one dimension which is like a random walk 
+//
+// Rajesh Singh
+// 20140429
+//
+//
+//
 
 #include <iostream> 
 #include <new>

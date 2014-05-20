@@ -1,3 +1,11 @@
+// Classes and constructors in C++. 
+//
+// Rajesh Singh
+// 20140429
+//
+//
+//
+
 #include <iostream>
 using namespace std;
 

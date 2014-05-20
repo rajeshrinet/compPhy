@@ -1,3 +1,10 @@
+# Driver file, written in python, for matrix multiplication using C and Cython 
+#
+# Rajesh Singh
+# 20140220
+#
+
+
 import numpy as np
 import matMul
 

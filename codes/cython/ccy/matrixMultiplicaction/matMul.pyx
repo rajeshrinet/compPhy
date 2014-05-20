@@ -1,3 +1,10 @@
+# matrix multiplication using C and Cython 
+#
+# Rajesh Singh
+# 20140220
+#
+
+
 import cython
 import numpy as np
 cimport numpy as np

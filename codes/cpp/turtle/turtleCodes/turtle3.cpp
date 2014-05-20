@@ -1,4 +1,10 @@
 // destructors to delete the pointer  passed to the classs
+//
+// Rajesh Singh
+// 20140429
+//
+//
+//
 
 #include <iostream>
 #include <math.h>

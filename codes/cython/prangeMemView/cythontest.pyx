@@ -1,5 +1,6 @@
 # Basic cython class for calculating multiplication of two arrays.
 #
+# Rajesh Singh
 # 20131223
 #               
 #             : this codes uses OpenMP multithreading
