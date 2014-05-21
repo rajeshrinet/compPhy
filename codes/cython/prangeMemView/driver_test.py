@@ -1,5 +1,6 @@
 # This is the driver file for demonstration of OpenMP multithreading 
-#
+# 
+# Rajesh Singh
 # 20131223
 #
 #
