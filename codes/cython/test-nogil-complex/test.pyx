@@ -69,48 +69,6 @@ cdef class cythontest:
         print 'came out safely!'
         return
         
-    cpdef stressletV(self, np.ndarray v, double [:] r, double [:] S, double sigma=1, int NN=20):
-        cdef:
-            int i, nx, ny , x, y, Nx, Ny, Np, jx, jy
-            double arg, facx, facy, kx, ky, skk, skx, sky, 
-            double scale = pow(2*PI*sigma*sigma, 2/2) 
-            double kdotdr, pdotk
-            double [:, :] fx0 = self.fx0
-            complex [:, :] fk0 = self.fk0
-            complex [:, :] fkx = self.fkx
-            complex [:, :] fky = self.fky
-        Nx = self.N
-        Ny = self.N 
-        facx = self.th
-        facy = self.th
-        Np = self.N
-       
-        x = int(Nx/3)
-        y = int(Ny/3)
-        for ny in range(2*NN+2):
-            for nx in range(2*NN+2):
-                x = x - NN + nx
-                y = y - NN + ny
-                arg = ((x-Nx/2 )**2 + (y -Ny/2)**2 )/ (2 * sigma*sigma)
-                x = x%Nx
-                y = y%Ny
-                self.fx0[y, x] += exp(-arg)*scale
-        
-        self.fk0 = np.fft.fftn(self.fx0)
-
-        for jy in prange(Nx, nogil=True): 
-            for jx in range(0, Ny): 
-                for i in range(Np):
-                    kx = jx*facx if jx <= Nx / 2 else (-Nx+jx)*facx
-                    ky = jy*facy if jy <= Ny / 2 else (-Ny+jy)*facy
-                    kdotdr = kx*(r[i]-Nx/2) + ky*(r[i+Np]-Ny/2)
-                    skx = S[i]*kx    + S[i+Np]*ky
-                    sky = S[i+Np]*kx - S[i]*ky
-                    fkx[jy, jx] += -1j*fk0[jy, jx]*skx*(cos(kdotdr) + 1j*sin(kdotdr))
-                    fky[jy, jx] += -1j*fk0[jy, jx]*sky*(cos(kdotdr) + 1j*sin(kdotdr))
-        self.solve( v, np.concatenate(( self.fkx.reshape(Nx*Ny), self.fky.reshape(Ny*Ny) ))   )
-        return
-    
-
+     
     cpdef solve(self, np.ndarray v, np.ndarray f, ):
         pass
