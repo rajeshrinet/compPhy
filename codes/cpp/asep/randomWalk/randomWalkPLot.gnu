@@ -10,16 +10,15 @@ set grid
 # now plot
 plot "./testData.txt" u 1:2 t '' w lp ls 1
 
-binwidth=5
-bin(x,width)=width*floor(x/width)
 
 
 set style data histograms
 unset key
-binwidth = 0.001
+binwidth = 1
 bin(x,width) = width*floor(x/width)
 set style fill transparent solid 0.7 border -1
-plot './testData.txt' using 3:(1) smooth freq with boxes lc rgb '#348AB#348ABDtle
+plot './testData.txt' using (bin($3, binwidth)):(1.0) smooth freq with boxes lc rgb '#348AB#348ABDtle
+#plot './testData.txt' using 3:(1) smooth freq with boxes lc rgb '#348AB#348ABDtle
 
 
 

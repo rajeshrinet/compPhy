@@ -24,7 +24,7 @@ main()
     
     init_genrand(time(NULL));   // seed the random number generator
     int i;
-    double wall=20, a=0.4;
+    double wall=20, a=0.5048;
     int disp[Ns], netDisp[Ns];
     
     // initialse the arrays to be zero
@@ -40,9 +40,9 @@ main()
         
         //biasedRandomWalk(disp, a) ;                // random walk in 1D with bias
         
-        singleReflectingRandomWalk(disp, wall);      // random walk in 1D with ony one reflecting wall
+        //singleReflectingRandomWalk(disp, wall);      // random walk in 1D with ony one reflecting wall
         
-        //reflectingRandomWalk(disp, wall) ;         // random walk in 1D with reflecting walls
+        reflectingRandomWalk(disp, wall) ;         // random walk in 1D with reflecting walls
         
         netDisp[i] = disp[Ns-1];                     //net displacement after each walk.
     }
