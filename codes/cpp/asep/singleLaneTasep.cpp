@@ -11,8 +11,8 @@
 #include <cmath>
 #include <stdio.h>
 #include <stdlib.h>
-#include "/home/rsingh/software/utils/mt19937ar.h"
-#include "/home/rsingh/software/utils/mt19937ar.c"
+#include "mt19937ar.h"
+#include "mt19937ar.c"
 using namespace std;
 
 
