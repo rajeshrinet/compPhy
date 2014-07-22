@@ -18,11 +18,11 @@ using namespace std;
 
 int main()
 {
-    int ld = 250, iter=1e9;       // lattice and iterations to be done on them.
+    int ld = 100, iter=1e7;       // lattice and iterations to be done on them.
     int i, j, ii, rn;
     int intrvl = 100;             // interval after how many iterations at which observation is made.
     double rn1;                   
-    double lbc=0.6, rbc=0.1;      // boundary conditions (BCs) on the left and right boundaries.
+    double lbc=0.9, rbc=0.9;      // boundary conditions (BCs) on the left and right boundaries.
     int A[ld];                    // occupancy of the site on the lattice
     double d[ld];                  
 	init_genrand(time(NULL));     // seed the random number generator with the NULL of the time!
