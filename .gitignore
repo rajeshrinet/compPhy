@@ -1,6 +1,5 @@
 *.pyc
 *.so
-*.c
 *.html
 *.ipynb_checkpoints
 *~
