@@ -3,8 +3,8 @@
 #include <sys/time.h>
 #include <omp.h>
 
-#define LOOPS		186000
-#define N 			110000
+#define LOOPS		1000
+#define N 			1000
 int i, j;
 double calcTime(void)
 {
@@ -40,7 +40,7 @@ int func(int nthreads)
 int main()
 {
     int i;
-    for (i = 4; i < 5; i++) {
+    for (i = 0; i < 4; i++) {
         func(i);
     }
 }
