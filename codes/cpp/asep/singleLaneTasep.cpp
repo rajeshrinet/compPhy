@@ -13,60 +13,51 @@
 #include <stdlib.h>
 #include "mt19937ar.h"
 #include "mt19937ar.c"
+#define Ns 100               // lattice size
 using namespace std;
 
 
 int main()
 {
-    int ld = 100, iter=1e7;       // lattice and iterations to be done on them.
+    //// Declarations
+    //define functions for modularity
+    void initialise(    int [], double []);
+    void addParticle(   int [], double);
+    void removeParticle(int [], double);
+    void moveParticle(  int [], int   );
+    
+    int iter=1e8;       // lattice and iterations to be done on them.
     int i, j, ii, rn;
     int intrvl = 100;             // interval after how many iterations at which observation is made.
-    double rn1;                   
     double lbc=0.9, rbc=0.9;      // boundary conditions (BCs) on the left and right boundaries.
-    int A[ld];                    // occupancy of the site on the lattice
-    double d[ld];                  
-	init_genrand(time(NULL));     // seed the random number generator with the NULL of the time!
+    int A[Ns];                    // occupancy of the site on the lattice
+    double d[Ns];                  
 
+
+	init_genrand(time(NULL));                                               // seed the random number generator with the NULL of the time!
+
+    initialise(A, d);                                                       // initialise the array!  
     
-    // initialise the lattice randomly and zero the density to start with.
-    for (i = 0; i < ld; i++){
-        rn1 = genrand_real2();
-        if ( rn1  <= 0.5) A[i] = 1;
-        else A[i] = 0;     
-
-        d[i]  = 0;          //initialise the density to be zero on the site.
-        }
-
-    
-    // Movement of particles on the lattice depending on the BCs.
+    // now simulate
     for (j=1; j<iter; j++){                  
-        rn = genrand_real2()*(ld + 1);        // NOTE that we have generated N+1 RNs for N sized lattice.    
+        rn = genrand_real2()*(Ns + 1);                                      // NOTE that we have generated N+1 RNs for N sized lattice.    
 
-        //case corresponding to the injection
-        if (rn == ld){                        
-            if (A[0]==0){
-                rn1 = genrand_real2();
-                if (rn1 <=lbc) A[0]=1;
-            }         
-        }
+    
+        // case corresponding to the addition of particle
+        if (( rn == Ns) && (A[0]==0) )           addParticle(A, lbc);      
 
-        //case corresponding to the withdrawal
-        else if (rn == (ld-1)){              
-            if (A[ld-1]==1){
-                rn1 = genrand_real2();
-                if (rn1 <=rbc) A[ld-1]=0;
-                }
-        }              
 
-        //the shifting of particles on the lattice if the chosen site is not on the boundaries.
-        else {                                          
-           rn1 = A[rn]; 
-           A[rn] = A[rn]*A[rn+1];
-           A[rn+1] = A[rn+1] + (1- A[rn+1])*rn1;
-        }              
+        // case corresponding to the particle removal
+        else if ( (rn == Ns-1) && (A[Ns-1]==1) ) removeParticle(A, rbc);    
+                      
 
-    if (j%intrvl==0){  // take the observation with this interval!
-        for (ii=0; ii<ld; ii++) {d[ii] +=A[ii];}
+        // move the  particles on the lattice 
+        else if ( (A[rn]==1) && (A[rn+1]==0) )   moveParticle(A, rn);       
+
+
+    // take the observation with this interval!
+    if (j%intrvl==0){                                           
+        for (ii=0; ii<Ns; ii++) {d[ii] +=A[ii];}
         } 
     }
 
@@ -74,7 +65,7 @@ int main()
 //simulation completed! Now plot, save, etc. with the data.       
         ofstream myfile;
         myfile.open ("testData.txt");
-        for (i=0; i<ld; i++){
+        for (i=0; i<Ns; i++){
              cout <<i<<"  "<<intrvl*d[i]/iter<<endl;
              myfile <<i<<"  "<<intrvl*d[i]/iter<<endl;
         }
@@ -85,3 +76,49 @@ return 0;
 }
 
 
+//--------------------------------------------------
+// functions block
+//--------------------------------------------------
+
+void initialise(int A[], double d[]){
+    double rn1;
+    int i;
+    // initialise the lattice randomly and zero the density to start with.
+    for (i = 0; i < Ns; i++){
+        rn1 = genrand_real2();
+        if ( rn1  <= 0.5) A[i] = 1;
+        else A[i] = 0;     
+
+        d[i]  = 0;          //initialise the density to be zero on the site.
+        }
+}
+
+
+// add particle
+void addParticle(int A[], double lbc){
+    double rn1; 
+    if (A[0]==0){
+        rn1 = genrand_real2();
+        if (rn1 <=lbc) A[0]=1;
+    }         
+}
+
+
+// remove particle
+void removeParticle(int A[], double rbc){
+    double rn1;
+    if (A[Ns-1]==1){
+        rn1 = genrand_real2();
+        if (rn1 <=rbc) A[Ns-1]=0;
+        }
+}
+
+
+// move the particle
+// Movement of particles on the lattice depending on the BCs.
+void moveParticle(int A[], int rn){
+    int rn1;
+    rn1 = A[rn]; 
+    A[rn] = A[rn]*A[rn+1];
+    A[rn+1] = A[rn+1] + (1- A[rn+1])*rn1;
+}
