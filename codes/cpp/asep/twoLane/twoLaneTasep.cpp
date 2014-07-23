@@ -13,8 +13,8 @@
 #include <stdlib.h>
 #include "../mt19937ar.h"
 #include "../mt19937ar.c"
-#define Ns 100               // lattice sized
-#define beta 1               // interaction parameter between lattices.
+#define Ns 1000               // lattice sized
+#define beta 0              // interaction parameter between lattices.
 using namespace std;
 
 
@@ -31,8 +31,8 @@ int main()
     int iter=1e8;       // lattice and iterations to be done on them.
     int i, j, ii, rn;
     int intrvl = 100;             // interval after how many iterations at which observation is made.
-    double lbc=0.9, rbc=0.9;      // boundary conditions (BCs) on the left and right boundaries.
-    double lbc2=0.3, rbc2=0.2;      // boundary conditions (BCs) on the left and right boundaries.
+    double lbc=0.3, rbc=0.6;      // boundary conditions (BCs) on the left and right boundaries.
+    double lbc2=0.1, rbc2=0.8;      // boundary conditions (BCs) on the left and right boundaries.
     int A[Ns], B[Ns];             // occupancy of the site on the lattice
     double d[Ns], d2[Ns];                  
 
@@ -151,11 +151,11 @@ void moveParticle(int A[], int rn){
 
 // move the particle in 2D
 // Movement of particles on the lattice depending on the BCs.
-void moveParticle2D(int A[], int B[], int rn){
-    int r1 = B[rn] + B[rn+1];
+void moveParticle2D(int C[], int D[], int rn){
+    int r1 = D[rn] + D[rn+1];
     double rate = (1 + (beta-1)*r1/2.0);
-    if (rate < 1000){//genrand_real2()){
-        A[rn] = 0;   
-        A[rn+1]=1;
+    if (genrand_real2() <= rate){
+        C[rn] = 0;   
+        C[rn+1]=1;
     }
 }
