@@ -14,7 +14,7 @@
 #include "../mt19937ar.h"
 #include "../mt19937ar.c"
 #define Ns 1000               // lattice sized
-#define beta 0              // interaction parameter between lattices.
+#define beta 1              // interaction parameter between lattices.
 using namespace std;
 
 

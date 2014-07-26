@@ -5,7 +5,7 @@ set terminal wxt size 1000, 500 enhanced font 'Verdana,15' persist
 set title "ASEP: Plot of density with lattice site"
 set style line 1 lc rgb '#8b1a0e' pt 6 ps 1 lt 1 lw 2    
 set style line 2 lc rgb '#348ABD' pt 6 ps 1 lt 1 lw 2    
-set key bottom right
+set key bottom left
 set xlabel "Lattice site"
 set ylabel "Density (x)"
 set grid
