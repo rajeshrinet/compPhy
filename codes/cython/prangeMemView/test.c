@@ -5,6 +5,8 @@
 
 #define LOOPS		1000
 #define N 			1000
+
+
 int i, j;
 double calcTime(void)
 {
@@ -36,6 +38,8 @@ int func(int nthreads)
     double end = calcTime();
     printf("%d threads takes %e seconds\n", omp_get_max_threads(), end - start);
 }
+
+
 
 int main()
 {
