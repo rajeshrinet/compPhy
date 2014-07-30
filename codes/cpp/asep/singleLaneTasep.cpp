@@ -54,7 +54,7 @@ int main()
 
 
     // take the observation with this interval!
-    if (j%intrvl==0){                                           
+    if (j>1e5 && j%intrvl==0){                                           
         for (ii=0; ii<Ns; ii++) {d[ii] +=A[ii];}
         } 
     }
@@ -104,8 +104,6 @@ void removeParticle(int A[], double rbc){
 // move the particle
 // Movement of particles on the lattice depending on the BCs.
 void moveParticle(int A[], int rn){
-    int rn1;
-    rn1 = A[rn]; 
-    A[rn] = A[rn]*A[rn+1];
-    A[rn+1] = A[rn+1] + (1- A[rn+1])*rn1;
+    A[rn]   = 0;
+    A[rn+1] = 1;
 }

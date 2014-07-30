@@ -33,8 +33,8 @@ int main()
     int iter=1e8;                           // lattice and iterations to be done on them.
     int i, j, ii, rn;
     int intrvl = 100;                       // interval after how many iterations at which observation is made.
-    double lbc=0.3, rbc=0.6;                // boundary conditions (BCs) on the left and right boundaries.
-    double lbc2=0.1, rbc2=0.8;              // boundary conditions (BCs) on the left and right boundaries.
+    double lbc=0.4, rbc=0.2;                // boundary conditions (BCs) on the left and right boundaries.
+    double lbc2=0.001, rbc2=0.8;              // boundary conditions (BCs) on the left and right boundaries.
     int A[Ns], B[Ns];                       // occupancy of the site on the two lattices
     double d[Ns], d2[Ns];                   // density on the two lattices          
 
@@ -74,7 +74,7 @@ int main()
             }
 
         // take the observation with this interval!
-        if (j%intrvl==0){                                           
+        if (j>1e5 && j%intrvl==0){                                           
             for (ii=0; ii<Ns; ii++) {
                 d[ii] +=A[ii];
                 d2[ii]+=B[ii];
