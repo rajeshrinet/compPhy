@@ -1,0 +1,7 @@
+intent in fortran
+.f means f77
+.f90 means f90
+
+
+
+what are extension modules?
