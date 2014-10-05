@@ -6,15 +6,16 @@
 // 
 //
 
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <stdio.h>
-#include <stdlib.h>
-#include "mt19937ar.h"
-#include "mt19937ar.c"
+
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+#include "../utils/mt19937ar.h"
+#include "../utils/mt19937ar.c"
+#include <time.h>    // time()
+
+
 #define Ns 100               // lattice size
-using namespace std;
 
 
 int main()
@@ -29,12 +30,13 @@ int main()
     int iter=1e8;                        // lattice and iterations to be done on them.
     int i, j, ii, rn;
     int intrvl = 100;                    // interval after how many iterations at which observation is made.
-    double lbc=0.3, rbc=0.9;             // boundary conditions (BCs) on the left and right boundaries.
+    double lbc=0.9, rbc=0.9;             // boundary conditions (BCs) on the left and right boundaries.
     int A[Ns];                           // occupancy of the site on the lattice
     double d[Ns];                  
 
-
-	init_genrand(time(NULL));            // seed the random number generator with the NULL of the time!
+    long seedval;
+    seedval = time(0);
+	init_genrand(seedval);
 
     initialise(A, d);                    // initialise the lattice randomly!  
     
@@ -61,16 +63,16 @@ int main()
 
 
     //simulation completed! Now plot, save, etc. with the data.       
-    ofstream myfile;
-    myfile.open ("testData.txt");
+    FILE *fp;
+    fp = fopen("testData.txt", "w");
     for (i=0; i<Ns; i++){
-         cout <<i<<"  "<<intrvl*d[i]/iter<<endl;
-         myfile <<i<<"  "<<intrvl*d[i]/iter<<endl;
+        printf(     "%d \t %0.4f\t \n", i, intrvl*d[i]/iter);
+        fprintf(fp, "%d \t %0.4f\t \n", i, intrvl*d[i]/iter);
     }
-    myfile.close();
+    fclose(fp);
 
-// that is all!
 return 0;
+// that is all!
 }
 
 
@@ -80,7 +82,8 @@ return 0;
 
 void initialise(int A[], double d[]){
     // initialise the lattice randomly and zero the density to start with.
-    for (int i = 0; i < Ns; i++){
+    int i;
+    for (i = 0; i < Ns; i++){
         if ( genrand_real2() <= 0.5) A[i] = 1;
         else A[i] = 0;     
 

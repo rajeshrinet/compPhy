@@ -1,11 +1,22 @@
 /* This program for Ising Model in 1D generates psuedo random numbers using mersenne twister */
+//
+//
+//
+// Rajesh Singh
+// 
+//
+
+
 #include<stdio.h>
 #include<math.h>
 #include<stdlib.h>
-#include "mt19937ar.h"
+#include "../utils/mt19937ar.h"
+#include <time.h>    // time()
+
+
 #define N 64
 
-main()
+int main()
 {
 void take_input();
 void initialize( int []);
@@ -59,6 +70,7 @@ double be[]={0.25,0.50,0.75,1.0,2.0,4.0,8.0};
 				}
 			printf("%e \t %e \t %e \t %e \n",beta, Cavg/10, Cv[3]-(Cavg/10), Tot_E);	
 	}
+return 0;
 }
 
 

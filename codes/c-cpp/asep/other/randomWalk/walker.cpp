@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <omp.h>
-#include "../mt19937ar.h"
-#include "../mt19937ar.c"
+#include "../../../utils/mt19937ar.h"
+#include "../../../utils/mt19937ar.c"
 #define Ns 10000        // number of sites
 using namespace std;
 

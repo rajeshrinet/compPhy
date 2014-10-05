@@ -7,17 +7,14 @@
 //
 //
 
-
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <stdio.h>
-#include <stdlib.h>
-#include "../mt19937ar.h"
-#include "../mt19937ar.c"
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+#include <time.h>    // time()
+#include "../../../utils/mt19937ar.h"
+#include "../../../utils/mt19937ar.c"
 #define Ns 1000             // lattice size
 #define beta 0              // interaction parameter between lattices.
-using namespace std;
 
 
 int main()
@@ -84,13 +81,13 @@ int main()
 
 
     //simulation completed! Now plot, save, etc. with the data.       
-    ofstream myfile;
-    myfile.open ("testData.txt");
+    FILE *fp;
+    fp = fopen("testData.txt", "w");
     for (i=0; i<Ns; i++){
-         cout   <<i<<"  "<<intrvl*d[i]/iter<<"  "<<intrvl*d2[i]/iter<<endl;
-         myfile <<i<<"  "<<intrvl*d[i]/iter<<"  "<<intrvl*d2[i]/iter<<endl;
+        printf(     "%d \t %0.4f\t%0.4f\t \n", i, intrvl*d[i]/iter, intrvl*d2[i]/iter);
+        fprintf(fp, "%d \t %0.4f\t%0.4f\t \n", i, intrvl*d[i]/iter, intrvl*d2[i]/iter);
     }
-    myfile.close();
+    fclose(fp);
 
 
 // that is all!

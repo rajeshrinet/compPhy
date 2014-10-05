@@ -2,7 +2,7 @@ main=twoLaneTasep
 
 all: $(main)
 
-CPPFLAGS=-Wall -g -lm
+CFLAGS=-Wall -g -lm
 
 run:
 	./$(main)

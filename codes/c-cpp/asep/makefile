@@ -2,7 +2,7 @@ main=singleLaneTasep
 
 all: $(main)
 
-CPPFLAGS=-Wall -g -lm
+CFLAGS=-Wall -lm
 
 run:
 	./$(main)
