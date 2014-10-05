@@ -2,7 +2,7 @@ main=ising
 
 all: $(main)
 
-CFLAGS= mt19937ar.c -lm 
+CFLAGS=-lm
 
 run:
 	./$(main)

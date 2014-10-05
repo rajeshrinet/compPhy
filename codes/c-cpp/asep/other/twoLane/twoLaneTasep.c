@@ -17,8 +17,7 @@
 #define beta 0              // interaction parameter between lattices.
 
 
-int main()
-{
+int main(){
     //// Declarations
     // define functions for modularity
     void initialise(    int [], int [], double [], double []);

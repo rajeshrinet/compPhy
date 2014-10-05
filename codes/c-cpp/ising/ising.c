@@ -7,14 +7,14 @@
 //
 
 
-#include<stdio.h>
-#include<math.h>
-#include<stdlib.h>
-#include "../utils/mt19937ar.h"
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
 #include <time.h>    // time()
+#include "../utils/mt19937ar.h"
+#include "../utils/mt19937ar.c"
 
-
-#define N 64
+#define Ns 64
 
 int main()
 {
@@ -24,17 +24,16 @@ void mcmove( int [],double);
 int total_energy( int []);
 int total_mag( int []);
 
-int spin[N];
+int spin[Ns];
 double Cv[10];
 int i, j, m, r, EQM, MCS;
 double Tot_E, big_energy, Tot_E2, big_energy2, E, Cavg;
-double Tot_M, big_mag, Tot_M2, big_mag2, M, beta;
+double Tot_M, big_mag, Tot_M2, big_mag2, Mag, beta;
 double be[]={0.25,0.50,0.75,1.0,2.0,4.0,8.0};	
 	
 	
 	for (m = 0; m < 7; m++){
 	beta = be[m];
-	//fprintf(stderr,"%e \n",beta);
 	Cavg = 0;    
   	initialize(spin);		
 		
@@ -49,21 +48,19 @@ double be[]={0.25,0.50,0.75,1.0,2.0,4.0,8.0};
   				
   					mcmove(spin,beta);
   			
-					M = total_mag(spin);
+					Mag = total_mag(spin);
 					E = total_energy(spin);
 				
-					big_mag = big_mag + M;
-					big_mag2 = big_mag2 + (M*M) ;
-					big_energy = big_energy + E;
-					big_energy2 = big_energy2 + (E*E) ;
+					big_mag     = big_mag     + Mag;
+					big_mag2    =  big_mag2   + Mag*Mag ;
+					big_energy  = big_energy  + E;
+					big_energy2 = big_energy2 + E*E ;
 					}
 					
-				
        			Tot_M = big_mag/MCS;
        			Tot_E = big_energy/MCS;
 				Tot_M2 = big_mag2/MCS; 
    				Tot_E2 = big_energy2/MCS;			
-       			
 	
 				Cv[r] =( Tot_E2 - (Tot_E * Tot_E) ) * beta * beta;
 				Cavg = (Cavg + Cv[r]);
@@ -76,8 +73,7 @@ return 0;
 
 // FUNCTIONS USED.
 /* 1. psuedo random number*/
-void take_input()
-{
+void take_input(){
 	long seedval;
 	seedval = time(0);
 	init_genrand(seedval);
@@ -85,18 +81,14 @@ void take_input()
 
 
 /* 2. Initialize the spin on the Lattice with periodic boundary conditions */
-
-
-void initialize( int spin[])
-{
+void initialize( int spin[]){
     int i;
-	for (i = 0 ; i < N ; i++){
-	
+	for (i = 0 ; i < Ns ; i++){
 	    if (genrand_real2() < 0.5) spin[i] = 1;
 	    else spin[i] = -1;	
 	    }
 	
-	spin[N-1] = spin[0];
+	spin[Ns-1] = spin[0];
 }
 
 
@@ -105,9 +97,8 @@ void initialize( int spin[])
 	int i, ipick;
   	double Ef,E0;
   	
-  		for (i = 0 ; i < N ; i++){
-  		
-		ipick =  N * genrand_real2() ;	  
+  		for (i = 0 ; i < Ns ; i++){
+		ipick =  Ns * genrand_real2() ;	  
      	E0 = total_energy(spin);
    	    spin[ipick] = -spin[ipick];	
    	    Ef = total_energy(spin);
@@ -123,20 +114,18 @@ void initialize( int spin[])
 
 
 /* 4. Total Energy */
-int total_energy( int spin[])
-{
+int total_energy( int spin[]){
 	int i;
 	double sum=0;
-	       	for (i = 0; i<N; i++) sum = sum - spin[i]*spin[(i+1)%N];
+	       	for (i = 0; i<Ns; i++) sum = sum - spin[i]*spin[(i+1)%Ns];
 	       	return(sum);
 }
 
 
 /*5. Total Magnetization */
-int total_mag( int spin[] )
-{
+int total_mag( int spin[] ){
 	int i;
 	double mag= 0;
-        for (i = 0 ; i < N; i++) mag = mag + spin[i];
+        for (i = 0 ; i < Ns; i++) mag = mag + spin[i];
         return(mag);
 }

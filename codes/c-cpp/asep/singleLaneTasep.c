@@ -18,8 +18,7 @@
 #define Ns 100               // lattice size
 
 
-int main()
-{
+int main(){
     //// Declarations
     //define functions for modularity
     void initialise(    int [], double []);
