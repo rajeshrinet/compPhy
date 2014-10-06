@@ -15,7 +15,7 @@ C = np.arange(9, dtype=np.float64).reshape((3, 3))
 print C
 
 # Multiply using the function in C
-matMul.multiply(A, B, C, 1)  # c = 1*a*b
+matMul.multiply(A, B, C, 1)  # c = 1*a*b + random-numbers
 
 print
 print 'Updated value of the array is:'
