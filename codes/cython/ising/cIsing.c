@@ -2,13 +2,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>    // time()
-#include "../../c-cpp/utils/mt19937ar.h"
-#include "../../c-cpp/utils/mt19937ar.c"
 
-#define Ns 64
 
 void cIsing(double* Energy, double* Magnetization, double* SpecificHeat, double* Beta, int Npoints, int Nsites) {
-
+srand(time(NULL));
 void initialize( int [],         int );
 void mcmove(     int [], double, int );
 int total_energy(int [],         int );
@@ -22,7 +19,6 @@ double Tot_M, big_mag, Tot_M2, big_mag2, Mag, beta;
 for (m = 0; m < Npoints; m++){
     beta = Beta[m];
     Cavg = 0;    
-
     // initialize the SYSTEM
     initialize(spin, Nsites);		
 
@@ -67,12 +63,9 @@ for (m = 0; m < Npoints; m++){
 
 /* 1. Initialize the spin on the Lattice with periodic boundary conditions */
 void initialize( int spin[], int Nsites ){
-	long seedval;
-	seedval = time(0);
-	init_genrand(seedval);
     int i;
 	for (i = 0 ; i < Nsites ; i++){
-	    if (genrand_real2() < 0.5) spin[i] = 1;
+	    if ((rand()%1000000)/1000000.0 < 0.5) spin[i] = 1;
 	    else spin[i] = -1;	
 	    }
 	spin[Nsites-1] = spin[0];
@@ -83,16 +76,15 @@ void initialize( int spin[], int Nsites ){
 	void mcmove( int spin[], double beta, int Nsites ){
 	int i, ipick;
   	double Ef,E0;
-  	
   		for (i = 0 ; i < Nsites ; i++){
-		ipick =  Nsites * genrand_real2() ;	  
+		ipick =  Nsites * (rand()%1000000)/1000000.0 ;	  
      	E0 = total_energy(spin, Nsites);
    	    spin[ipick] = -spin[ipick];	
    	    Ef = total_energy(spin, Nsites);
 			  
 			if (Ef<E0) spin[ipick] = spin[ipick];
 			else{
-			  	 if (genrand_real2() <= exp(-beta*(Ef-E0))) spin[ipick]=spin[ipick];
+			  	 if ((rand()%1000000)/1000000.0<= exp(-beta*(Ef-E0))) spin[ipick]=spin[ipick];
   				 else spin[ipick]=-spin[ipick];
   
   			}
