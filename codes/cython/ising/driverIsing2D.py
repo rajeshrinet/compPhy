@@ -24,7 +24,7 @@ SpecificHeat  = np.zeros(nPoints)
 Suseptibility  = np.zeros(nPoints)
 Spin = np.zeros((N, N), dtype=np.dtype("i"))
 
-Temp  = np.linspace(0.01, 05, nPoints)        #np.array([0.25, 0.11, 2, 4, 8, 10])
+Temp  = np.linspace(1, 4, nPoints)        #np.array([0.25, 0.11, 2, 4, 8, 10])
 
 
 Ising = ising.Ising(N, nPoints, eqSteps, mcSteps)

@@ -51,9 +51,9 @@ cdef class Ising:
             equilibrate(S, 1.0/T[m], N, eqSteps)                 # This is to equilibrate the system
 
             for i in range(mcSteps):#, nogil=True):
-                mcmove(S, 1.0/T[m], N)                   # monte carlo moves
+                mcmove(S, 1.0/T[m], N)                   # Monte Carlo moves
                 Ene = calcEnergy(S, N)                   # calculate the energy
-                Mag = calcMag(S, N)                      # calculate the magnetisation  
+                Mag = calcMag(S, N)                      # calculate the magnetization  
                 E1 = E1 + Ene
                 M1 = M1 + Mag
                 M2 = M2   + Mag*Mag ;
@@ -68,7 +68,10 @@ cdef class Ising:
 #-------------------------------------------------------------------
 ### Functions block
 #-------------------------------------------------------------------
+@cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.cdivision(True)
+@cython.nonecheck(False)
 cdef int initialstate(int [:, :] S, int N, long int seedval) nogil:    # generates a random spin Spinuration
     init_genrand(seedval)
     for i in range(N):
@@ -79,15 +82,20 @@ cdef int initialstate(int [:, :] S, int N, long int seedval) nogil:    # generat
                 S[i, j]=1
     return 0  
 
+
+@cython.wraparound(False)
 @cython.boundscheck(False)
-cdef int equilibrate(int [:, :] S, double beta, int N, int eqSteps) nogil:
+@cython.cdivision(True)
+@cython.nonecheck(False)
+cdef int equilibrate(int [:, :] S, double beta, int N, int eqSteps) nogil: 
+    ''' equilibrate the system'''
     cdef int i, j, a, b, s, nb, cost, eq
     for eq in prange(eqSteps, nogil=True):
         for i in range(N):
             for j in range(N):            
                     a = int(genrand_real2()*N)
                     b = int(genrand_real2()*N)
-                    nb = S[(a+1)%N,b] + S[a,(b+1)%N] + S[(a-1)%N,b] + S[a,(b-1)%N]
+                    nb = S[iMod(a+1, N), b] + S[a, iMod(b+1, N)] + S[iMod(a-1, N), b] + S[a, iMod(b-1, N)]
                     cost = 2*nb*S[a, b]
                     if cost < 0:    
                         S[a, b] = -S[a, b]
@@ -97,14 +105,19 @@ cdef int equilibrate(int [:, :] S, double beta, int N, int eqSteps) nogil:
                         S[a, b] = S[a, b]
     return 0 
 
+
+@cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.cdivision(True)
+@cython.nonecheck(False)
 cdef int mcmove(int [:, :] S, double beta, int N) nogil:
+    ''' Monte Carlo moves'''
     cdef int i, j, a, b, s, nb, cost 
     for i in prange(N, nogil=True):
         for j in range(N):            
                 a = int(genrand_real2()*N)
                 b = int(genrand_real2()*N)
-                nb = S[(a+1)%N,b] + S[a,(b+1)%N] + S[(a-1)%N,b] + S[a,(b-1)%N]
+                nb = S[iMod(a+1, N), b] + S[a, iMod(b+1, N)] + S[iMod(a-1, N), b] + S[a, iMod(b-1, N)]
                 cost = 2*nb*S[a, b]
                 if cost < 0:    
                     S[a, b] = -S[a, b]
@@ -115,21 +128,28 @@ cdef int mcmove(int [:, :] S, double beta, int N) nogil:
     return 0 
 
 
-## Energy calculation
+@cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.cdivision(True)
+@cython.nonecheck(False)
 cdef double calcEnergy(int [:, :] S, int N) nogil:
+    ''' Energy calculation'''
     cdef double energy = 0
     cdef int i, j, site, nb
     for i in prange(N, nogil=True):
         for j in range(N):
             site = S[i,j]
-            nb = S[(i+1)%N, j] + S[i,(j+1)%N] + S[(i-1)%N, j] + S[i,(j-1)%N]
+            nb = S[iMod(i+1, N), j] + S[i, iMod(j+1, N) ] + S[ iMod(i-1, N), j] + S[i, iMod(j-1, N)]
             energy += -nb*site 
     return energy/4. 
 
-## magnetization of  the configuration
+
+@cython.wraparound(False)
 @cython.boundscheck(False)
+@cython.cdivision(True)
+@cython.nonecheck(False)
 cdef double calcMag(int [:, :] S, int N) nogil:                
+    ''' magnetization of  the configuration'''
     cdef double mag = 0
     cdef int i, j,
 
@@ -138,10 +158,14 @@ cdef double calcMag(int [:, :] S, int N) nogil:
             mag += S[i, j]
     return mag
 
-cdef int iMod(int A, int B ):
-    ''' mod function for integers'''
-    pass
 
-cdef double dMod(double A, double B ):
-    '''  mod function for doubles'''
-    pass
+@cython.wraparound(False)
+@cython.boundscheck(False)
+@cython.cdivision(True)
+@cython.nonecheck(False)
+cdef int iMod(int A, int B ) nogil:
+    ''' mod function for integers - tailor made for this case'''
+    if (A==B)   :    A = 0
+    elif (A==-1):    A = B-1
+    return A
+
