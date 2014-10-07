@@ -7,14 +7,14 @@ import numpy as np
 import ising
 import matplotlib.pyplot as plt
 
-Nsites, Npoints = 64, 32
+Nsites, Npoints = 32, 32
 Beta = np.zeros(Npoints)
 Energy        = np.zeros(Npoints)
 Magnetisation = np.zeros(Npoints)
 SpecificHeat  = np.zeros(Npoints)
 
 #Beta = np.array(([0.25,0.50,0.75,1.0,2.0,4.0,8.0]));	
-Beta = np.linspace(0.01, 4.5, 32)
+Beta = np.linspace(0.2, 4, 32)
 
 
 #instantiate the class Ising model

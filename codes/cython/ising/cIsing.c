@@ -5,62 +5,51 @@
 
 
 void cIsing(double* Energy, double* Magnetization, double* SpecificHeat, double* Beta, int Npoints, int Nsites) {
-srand(time(NULL));
-void initialize( int [],         int );
-void mcmove(     int [], double, int );
-int total_energy(int [],         int );
-int total_mag( int [],           int );
-
-int spin[Nsites];
-int i, j, m, r, EQM, MCS;
-double Tot_E, big_energy, Tot_E2, big_energy2, E, Cavg;
-double Tot_M, big_mag, Tot_M2, big_mag2, Mag, beta;
-
-for (m = 0; m < Npoints; m++){
-    beta = Beta[m];
-    Cavg = 0;    
-    // initialize the SYSTEM
-    initialize(spin, Nsites);		
-
-    // equilibrating the SYSTEM 
-    EQM = 10000; 
-    for (i = 0 ; i < EQM ; i++){
-        mcmove(spin, beta, Nsites);
-        }
+    srand(time(NULL));
+    void initialize( int [],         int );
+    void mcmove(     int [], double, int );
+    int total_energy(int [],         int );
+    int total_mag( int [],           int );
     
-    // measurements
-    big_energy = big_mag = big_energy2 = big_mag2 = 0;
-    MCS = 10000;
-    for (i = 0 ; i < MCS ; i++){
+    int spin[Nsites];
+    int i, m, eqSteps, mcSteps;
+    double Mag, Ene, E1, E2, M1, M2, beta;
+    
+    for (m = 0; m < Npoints; m++){
+        beta = Beta[m];
+        // initialize the SYSTEM
+        initialize(spin, Nsites);		
+    
+        // equilibrating the SYSTEM 
+        eqSteps = 10000; 
+        for (i = 0 ; i < eqSteps ; i++){
+            mcmove(spin, beta, Nsites);
+            }
         
-        mcmove(spin,beta, Nsites);
-        
-        Mag = total_mag(spin, Nsites);
-        E   = total_energy(spin, Nsites);
-        
-        big_mag     = big_mag     + Mag;
-        big_mag2    =  big_mag2   + Mag*Mag ;
-        big_energy  = big_energy  + E;
-        big_energy2 = big_energy2 + E*E ;
-        }
+        // measurements
+        E1 = E2 = M1 = M2 = 0;
+        mcSteps = 10000;
+        for (i = 0 ; i < mcSteps ; i++){
             
-    Tot_M = big_mag/MCS;
-    Tot_E = big_energy/MCS;
-    Tot_M2 = big_mag2/MCS; 
-    Tot_E2 = big_energy2/MCS;			
-
-    Cavg =( Tot_E2 - (Tot_E * Tot_E) ) * beta * beta;
-
-    Energy[m]        = Tot_E/Nsites;
-    Magnetization[m] = Tot_M/Nsites;
-    SpecificHeat[m]  = Cavg;
-	}
-}
+            mcmove(spin,beta, Nsites);
+            
+            Mag  = total_mag(spin, Nsites);
+            Ene  = total_energy(spin, Nsites);
+            
+            M1 = M1   + Mag;
+            E1 = E1   + Ene;
+            M2 = M2   + Mag*Mag ;
+            E2 = E2   + Ene*Ene;
+            }
+    
+        Energy[m]        = E1/(Nsites*mcSteps);
+        Magnetization[m] = M1/(Nsites*mcSteps);
+        SpecificHeat[m]  = ( E2/mcSteps - E1*E1/(mcSteps*mcSteps) )*beta*beta/(Nsites);
+    	}
+    }
 
 
 // FUNCTIONS USED.
-
-
 /* 1. Initialize the spin on the Lattice with periodic boundary conditions */
 void initialize( int spin[], int Nsites ){
     int i;
