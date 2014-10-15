@@ -4,37 +4,34 @@
 #include <time.h>    // time()
 
 
-void cIsing(double* Energy, double* Magnetization, double* SpecificHeat, double* Beta, int Npoints, int Nsites) {
+void cIsing(int* Spin, double* Energy, double* Magnetization, double* SpecificHeat, double* Beta, int Npoints, int Nsites, int eqSteps, int mcSteps) {
     srand(time(NULL));
     void initialize( int [],         int );
     void mcmove(     int [], double, int );
     int total_energy(int [],         int );
     int total_mag( int [],           int );
     
-    int spin[Nsites];
-    int i, m, eqSteps, mcSteps;
+    int i, m;
     double Mag, Ene, E1, E2, M1, M2, beta;
     
     for (m = 0; m < Npoints; m++){
         beta = Beta[m];
         // initialize the SYSTEM
-        initialize(spin, Nsites);		
+        initialize(Spin, Nsites);		
     
         // equilibrating the SYSTEM 
-        eqSteps = 10000; 
         for (i = 0 ; i < eqSteps ; i++){
-            mcmove(spin, beta, Nsites);
+            mcmove(Spin, beta, Nsites);
             }
         
         // measurements
         E1 = E2 = M1 = M2 = 0;
-        mcSteps = 10000;
         for (i = 0 ; i < mcSteps ; i++){
             
-            mcmove(spin,beta, Nsites);
+            mcmove(Spin,beta, Nsites);
             
-            Mag  = total_mag(spin, Nsites);
-            Ene  = total_energy(spin, Nsites);
+            Mag  = total_mag(Spin, Nsites);
+            Ene  = total_energy(Spin, Nsites);
             
             M1 = M1   + Mag;
             E1 = E1   + Ene;
@@ -51,30 +48,30 @@ void cIsing(double* Energy, double* Magnetization, double* SpecificHeat, double*
 
 // FUNCTIONS USED.
 /* 1. Initialize the spin on the Lattice with periodic boundary conditions */
-void initialize( int spin[], int Nsites ){
+void initialize( int Spin[], int Nsites ){
     int i;
 	for (i = 0 ; i < Nsites ; i++){
-	    if ((rand()%1000000)/1000000.0 < 0.5) spin[i] = 1;
-	    else spin[i] = -1;	
+	    if ((rand()%1000000)/1000000.0 < 0.5) Spin[i] = 1;
+	    else Spin[i] = -1;	
 	    }
-	spin[Nsites-1] = spin[0];
+	Spin[Nsites-1] = Spin[0];
 }
 
 
 /* 2. Monte Carlo Moves employing the Metropolis Algorithm */
-	void mcmove( int spin[], double beta, int Nsites ){
+	void mcmove( int Spin[], double beta, int Nsites ){
 	int i, ipick;
   	double Ef,E0;
   		for (i = 0 ; i < Nsites ; i++){
 		ipick =  Nsites * (rand()%1000000)/1000000.0 ;	  
-     	E0 = total_energy(spin, Nsites);
-   	    spin[ipick] = -spin[ipick];	
-   	    Ef = total_energy(spin, Nsites);
+     	E0 = total_energy(Spin, Nsites);
+   	    Spin[ipick] = -Spin[ipick];	
+   	    Ef = total_energy(Spin, Nsites);
 			  
-			if (Ef<E0) spin[ipick] = spin[ipick];
+			if (Ef<E0) Spin[ipick] = Spin[ipick];
 			else{
-			  	 if ((rand()%1000000)/1000000.0<= exp(-beta*(Ef-E0))) spin[ipick]=spin[ipick];
-  				 else spin[ipick]=-spin[ipick];
+			  	 if ((rand()%1000000)/1000000.0<= exp(-beta*(Ef-E0))) Spin[ipick]=Spin[ipick];
+  				 else Spin[ipick]=-Spin[ipick];
   
   			}
 	    }
@@ -82,18 +79,18 @@ void initialize( int spin[], int Nsites ){
 
 
 /* 3. Total Energy */
-int total_energy( int spin[], int Nsites ){
+int total_energy( int Spin[], int Nsites ){
 	int i;
 	double sum=0;
-	       	for (i = 0; i<Nsites; i++) sum = sum - spin[i]*spin[(i+1)%Nsites];
+	       	for (i = 0; i<Nsites; i++) sum = sum - Spin[i]*Spin[(i+1)%Nsites];
 	       	return(sum);
 }
 
 
 /* 4. Total Magnetization */
-int total_mag( int spin[], int Nsites ){
+int total_mag( int Spin[], int Nsites ){
 	int i;
 	double mag= 0;
-        for (i = 0 ; i < Nsites; i++) mag = mag + spin[i];
+        for (i = 0 ; i < Nsites; i++) mag = mag + Spin[i];
         return(mag);
 }

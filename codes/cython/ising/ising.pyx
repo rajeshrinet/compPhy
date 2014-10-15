@@ -13,7 +13,7 @@ from cython.parallel import prange
 import time
 
 
-cdef extern void cIsing (double* A, double* B, double* S, double* D, int nPoints, int Nsites)
+cdef extern void cIsing (int* S, double* E, double* M, double* C, double* T, int nPoints, int Nsites, int eqSteps, int mcSteps)
 cdef extern from "time.h" :
     pass
 cdef extern from "../../c-cpp/utils/mt19937ar.h" nogil:
@@ -35,8 +35,8 @@ cdef class Ising:
 
         pass
     
-    cpdef oneD(self, np.ndarray[double, ndim=1, mode="c"] A, np.ndarray[double, ndim=1, mode="c"] B, np.ndarray[double, ndim=1, mode="c"] S, np.ndarray[double, ndim=1, mode="c"] D, int nPoints, int Nsites):
-        cIsing (&A[0], &B[0], &S[0], &D[0], nPoints, Nsites)
+    cpdef oneD(self, int    [:] S, double [:] E, double [:] M, double [:] C, double [:] T):
+        cIsing (&S[0], &E[0], &M[0], &C[0], &T[0], self.nPoints, self.Ns, self.eqSteps, self.mcSteps)
         return 
 
 
@@ -65,6 +65,7 @@ cdef class Ising:
             X[m] = ( M2/mcSteps - M1*M1/(mcSteps*mcSteps) )/(N*T[m]*T[m]);
         return
 
+
 #-------------------------------------------------------------------
 ### Functions block
 #-------------------------------------------------------------------
@@ -72,7 +73,7 @@ cdef class Ising:
 @cython.boundscheck(False)
 @cython.cdivision(True)
 @cython.nonecheck(False)
-cdef int initialstate(int [:, :] S, int N, long int seedval) nogil:    # generates a random spin Spinuration
+cdef int initialstate(int [:, :] S, int N, long int seedval) nogil:    # generates a random spin Spin configuration
     init_genrand(seedval)
     for i in range(N):
         for j in range(N):
@@ -164,7 +165,7 @@ cdef double calcMag(int [:, :] S, int N) nogil:
 @cython.cdivision(True)
 @cython.nonecheck(False)
 cdef int iMod(int A, int B ) nogil:
-    ''' mod function for integers - tailor made for this case'''
+    ''' mod function for integers,  tailor-made for this case'''
     if (A==B)   :    A = 0
     elif (A==-1):    A = B-1
     return A

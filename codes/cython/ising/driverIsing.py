@@ -8,21 +8,23 @@ import ising
 import matplotlib.pyplot as plt
 
 Nsites, Npoints = 32, 32
+Spin = np.zeros(Npoints, dtype=np.dtype("i"))
 Beta = np.zeros(Npoints)
 Energy        = np.zeros(Npoints)
 Magnetisation = np.zeros(Npoints)
 SpecificHeat  = np.zeros(Npoints)
+eqSteps, mcSteps = 10000, 10000
 
 #Beta = np.array(([0.25,0.50,0.75,1.0,2.0,4.0,8.0]));	
 Beta = np.linspace(0.2, 4, 32)
 
 
 #instantiate the class Ising model
-Ising = ising.Ising(1)
+Ising = ising.Ising(Nsites, Npoints, eqSteps, mcSteps)
 
 
 
-Ising.oneD(Energy, Magnetisation, SpecificHeat, Beta, Npoints, Nsites)  
+Ising.oneD(Spin, Energy, Magnetisation, SpecificHeat, Beta)  
 
 
 #Plotting business
