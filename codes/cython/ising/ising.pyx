@@ -13,7 +13,7 @@ from cython.parallel import prange
 import time
 
 
-cdef extern void cIsing (int* S, double* E, double* M, double* C, double* T, int nPoints, int Nsites, int eqSteps, int mcSteps)
+cdef extern void cIsing (int* S, double* E, double* M, double* C, double* X, double* T, int nPoints, int Nsites, int eqSteps, int mcSteps)
 cdef extern from "time.h" :
     pass
 cdef extern from "../../c-cpp/utils/mt19937ar.h" nogil:
@@ -35,8 +35,8 @@ cdef class Ising:
 
         pass
     
-    cpdef oneD(self, int    [:] S, double [:] E, double [:] M, double [:] C, double [:] T):
-        cIsing (&S[0], &E[0], &M[0], &C[0], &T[0], self.nPoints, self.Ns, self.eqSteps, self.mcSteps)
+    cpdef oneD(self, int    [:] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] T):
+        cIsing (&S[0], &E[0], &M[0], &C[0], &X[0], &T[0], self.nPoints, self.Ns, self.eqSteps, self.mcSteps)
         return 
 
 

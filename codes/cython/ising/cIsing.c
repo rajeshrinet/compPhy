@@ -4,7 +4,7 @@
 #include <time.h>    // time()
 
 
-void cIsing(int* Spin, double* Energy, double* Magnetization, double* SpecificHeat, double* Beta, int Npoints, int Nsites, int eqSteps, int mcSteps) {
+void cIsing(int* Spin, double* Energy, double* Magnetization, double* SpecificHeat, double* Susceptibility, double* Beta, int Npoints, int Nsites, int eqSteps, int mcSteps) {
     srand(time(NULL));
     void initialize( int [],         int );
     void mcmove(     int [], double, int );
@@ -27,9 +27,8 @@ void cIsing(int* Spin, double* Energy, double* Magnetization, double* SpecificHe
         // measurements
         E1 = E2 = M1 = M2 = 0;
         for (i = 0 ; i < mcSteps ; i++){
-            
-            mcmove(Spin,beta, Nsites);
-            
+            mcmove(Spin, beta, Nsites);
+              
             Mag  = total_mag(Spin, Nsites);
             Ene  = total_energy(Spin, Nsites);
             
@@ -39,9 +38,10 @@ void cIsing(int* Spin, double* Energy, double* Magnetization, double* SpecificHe
             E2 = E2   + Ene*Ene;
             }
     
-        Energy[m]        = E1/(Nsites*mcSteps);
-        Magnetization[m] = M1/(Nsites*mcSteps);
-        SpecificHeat[m]  = ( E2/mcSteps - E1*E1/(mcSteps*mcSteps) )*beta*beta/(Nsites);
+        Energy[m]         = E1/(Nsites*mcSteps);
+        Magnetization[m]  = M1/(Nsites*mcSteps);
+        SpecificHeat[m]   = ( E2/mcSteps - E1*E1/(mcSteps*mcSteps) )*beta*beta/(Nsites);
+        Susceptibility[m] = ( M2/mcSteps - M1*M1/(mcSteps*mcSteps) )*beta*beta/(Nsites);
     	}
     }
 

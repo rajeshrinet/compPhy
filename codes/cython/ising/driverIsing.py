@@ -7,16 +7,15 @@ import numpy as np
 import ising
 import matplotlib.pyplot as plt
 
-Nsites, Npoints = 32, 32
+Nsites, Npoints = 64, 128
 Spin = np.zeros(Npoints, dtype=np.dtype("i"))
-Beta = np.zeros(Npoints)
 Energy        = np.zeros(Npoints)
-Magnetisation = np.zeros(Npoints)
+Magnetization = np.zeros(Npoints)
+Suseptibility = np.zeros(Npoints)
 SpecificHeat  = np.zeros(Npoints)
 eqSteps, mcSteps = 10000, 10000
 
-#Beta = np.array(([0.25,0.50,0.75,1.0,2.0,4.0,8.0]));	
-Beta = np.linspace(0.2, 4, 32)
+Beta = np.linspace(0.2, 4, Npoints)
 
 
 #instantiate the class Ising model
@@ -24,27 +23,34 @@ Ising = ising.Ising(Nsites, Npoints, eqSteps, mcSteps)
 
 
 
-Ising.oneD(Spin, Energy, Magnetisation, SpecificHeat, Beta)  
+Ising.oneD(Spin, Energy, Magnetization, SpecificHeat, Suseptibility, Beta)  
 
 
-#Plotting business
-f = plt.figure(num=None, figsize=(18, 6), dpi=80, facecolor='w', edgecolor='k')
-f.add_subplot(1, 3, 1)
-plt.plot(Beta, Energy, 'o', color="#348ABD", linewidth=2, linestyle="-", label='Energy')
-plt.xlabel('Beta',fontsize=16)
-plt.legend(loc="upper left")
-plt.ylim([-1.2, 0])
+# plot the energy and Magnetization
+f = plt.figure(figsize=(18, 10), dpi=80, facecolor='w', edgecolor='k');    
 
-f.add_subplot(1, 3, 2)
-plt.plot(Beta, np.abs(Magnetisation), 'o', color="#A60628", linewidth= 3, linestyle="", label='Magnetization')
-plt.xlabel('Beta',fontsize=16)
-plt.ylim([-0, 1.2])
-plt.legend(loc="upper left")
-f.add_subplot(1, 3, 3)
-plt.plot(Beta, SpecificHeat, 'o', color="#A60628", linewidth= 3, linestyle="", label='SpecificHeat')
-plt.xlabel('Beta',fontsize=16)
-plt.legend(loc="upper left")
+sp =  f.add_subplot(2, 2, 1 );
+plt.plot(Beta, Energy, 'o', color="#A60628", label=' Energy');
+plt.xlabel("Beta (T)", fontsize=20);
+plt.ylabel("Energy ", fontsize=20);
 
-#show the plot
+sp =  f.add_subplot(2, 2, 2 );
+plt.plot(Beta, abs(Magnetization), '*', label='Magnetization');
+plt.xlabel("Beta (T)", fontsize=20);
+plt.ylabel("Magnetization ", fontsize=20);
+
+
+sp =  f.add_subplot(2, 2, 3 );
+plt.plot(Beta, SpecificHeat, '*', label='Specific Heat');
+plt.xlabel("Beta (T)", fontsize=20);
+plt.ylabel("Specific Heat ", fontsize=20);
+
+
+sp =  f.add_subplot(2, 2, 4 );
+plt.plot(Beta, Suseptibility, '*', label='Specific Heat');
+#plt.legend(loc='best', fontsize=15); 
+plt.xlabel("Beta (T)", fontsize=20);
+plt.ylabel("Suseptibility", fontsize=20);
+
+
 plt.show()
-
