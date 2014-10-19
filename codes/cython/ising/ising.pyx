@@ -75,8 +75,8 @@ cdef class Ising:
 @cython.nonecheck(False)
 cdef int initialstate(int [:, :] S, int N, long int seedval) nogil:    # generates a random spin Spin configuration
     init_genrand(seedval)
-    for i in range(N):
-        for j in range(N):
+    for i in range(1, N+1):
+        for j in range(1, N+1):
             if (genrand_real2()<0.5): 
                 S[i, j]=-1
             else:
@@ -92,11 +92,15 @@ cdef int equilibrate(int [:, :] S, double beta, int N, int eqSteps) nogil:
     ''' equilibrate the system'''
     cdef int i, j, a, b, s, nb, cost, eq
     for eq in prange(eqSteps, nogil=True):
-        for i in range(N):
-            for j in range(N):            
+        for i in range(1, N+1):
+            for j in range(1, N+1):            
                     a = int(genrand_real2()*N)
                     b = int(genrand_real2()*N)
-                    nb = S[iMod(a+1, N), b] + S[a, iMod(b+1, N)] + S[iMod(a-1, N), b] + S[a, iMod(b-1, N)]
+                    a = a + 1
+                    b = b + 1
+                    S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];
+                    S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1]
+                    nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
                     cost = 2*nb*S[a, b]
                     if cost < 0:    
                         S[a, b] = -S[a, b]
@@ -114,11 +118,17 @@ cdef int equilibrate(int [:, :] S, double beta, int N, int eqSteps) nogil:
 cdef int mcmove(int [:, :] S, double beta, int N) nogil:
     ''' Monte Carlo moves'''
     cdef int i, j, a, b, s, nb, cost 
-    for i in prange(N, nogil=True):
-        for j in range(N):            
+    for i in prange(1, N+1, nogil=True):
+        for j in range(1, N+1):            
                 a = int(genrand_real2()*N)
                 b = int(genrand_real2()*N)
-                nb = S[iMod(a+1, N), b] + S[a, iMod(b+1, N)] + S[iMod(a-1, N), b] + S[a, iMod(b-1, N)]
+                a = a + 1
+                b = b + 1
+                S[0, b]   = S[N, b]
+                S[N+1, b] = S[0, b]
+                S[a, 0]   = S[a, N+1]
+                S[a, N+1] = S[a, 1]
+                nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
                 cost = 2*nb*S[a, b]
                 if cost < 0:    
                     S[a, b] = -S[a, b]
@@ -137,10 +147,14 @@ cdef double calcEnergy(int [:, :] S, int N) nogil:
     ''' Energy calculation'''
     cdef double energy = 0
     cdef int i, j, site, nb
-    for i in prange(N, nogil=True):
-        for j in range(N):
+    for i in prange(1, N+1, nogil=True):
+        for j in range(1, N+1):
             site = S[i,j]
-            nb = S[iMod(i+1, N), j] + S[i, iMod(j+1, N) ] + S[ iMod(i-1, N), j] + S[i, iMod(j-1, N)]
+            S[0,   j] = S[N, j]
+            S[N+1, j] = S[0, j]
+            S[i, 0]   = S[i, N+1]
+            S[i, N+1] = S[i, 1]
+            nb = S[i+1, j] + S[i, j+1] + S[i-1, j] + S[i, j-1]
             energy += -nb*site 
     return energy/4. 
 
@@ -154,19 +168,9 @@ cdef double calcMag(int [:, :] S, int N) nogil:
     cdef double mag = 0
     cdef int i, j,
 
-    for i in prange(N, nogil=True):
-        for j in range(N):
+    for i in prange(1, N+1, nogil=True):
+        for j in range(1, N+1):
             mag += S[i, j]
     return mag
 
-
-@cython.wraparound(False)
-@cython.boundscheck(False)
-@cython.cdivision(True)
-@cython.nonecheck(False)
-cdef int iMod(int A, int B ) nogil:
-    ''' mod function for integers,  tailor-made for this case'''
-    if (A==B)   :    A = 0
-    elif (A==-1):    A = B-1
-    return A
 

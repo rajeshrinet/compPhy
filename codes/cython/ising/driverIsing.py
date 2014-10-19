@@ -13,7 +13,7 @@ Energy        = np.zeros(Npoints)
 Magnetization = np.zeros(Npoints)
 Suseptibility = np.zeros(Npoints)
 SpecificHeat  = np.zeros(Npoints)
-eqSteps, mcSteps = 10000, 10000
+eqSteps, mcSteps = 1000, 1000
 
 Beta = np.linspace(0.2, 4, Npoints)
 

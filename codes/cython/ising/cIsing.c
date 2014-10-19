@@ -61,16 +61,16 @@ void initialize( int Spin[], int Nsites ){
 /* 2. Monte Carlo Moves employing the Metropolis Algorithm */
 	void mcmove( int Spin[], double beta, int Nsites ){
 	int i, ipick;
-  	double Ef,E0;
+  	double Ef,E0, cost=exp(-4*beta);
   		for (i = 0 ; i < Nsites ; i++){
 		ipick =  Nsites * (rand()%1000000)/1000000.0 ;	  
      	E0 = total_energy(Spin, Nsites);
    	    Spin[ipick] = -Spin[ipick];	
    	    Ef = total_energy(Spin, Nsites);
 			  
-			if (Ef<E0) Spin[ipick] = Spin[ipick];
+			if (Ef<=E0) Spin[ipick] = Spin[ipick];
 			else{
-			  	 if ((rand()%1000000)/1000000.0<= exp(-beta*(Ef-E0))) Spin[ipick]=Spin[ipick];
+			  	 if ((rand()%1000000)/1000000.0<= cost) Spin[ipick]=Spin[ipick];
   				 else Spin[ipick]=-Spin[ipick];
   
   			}
