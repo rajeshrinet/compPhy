@@ -44,49 +44,47 @@ cdef class Ising:
 
     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] T):
         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
-        cdef int i, a, b, t, cost, z = 4, N2 = N*N
+        cdef int i, a, b, tt, cost, z = 4, N2 = N*N
         cdef double Ene, Mag, E1, M1, E2, M2, beta, Ene0, Ene1
         cdef long int seedval=time.time()
         cdef double [:] cost2D = self.cost2D
         
-        for t in range(nPoints):#, nogil=True):
+        for tt in range(nPoints):#, nogil=True):
             E1 = E2 = M1 = M2 = 0
-            beta = 1/T[t]
+            beta = 1/T[tt]
             cost2D[1] = exp(-4*beta)
             cost2D[2] = exp(-8*beta)
             initialstate(S, N, seedval)
             for i in range(eqSteps):
-                
                 a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
-                S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];  # ensuring BC
-                S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1];
+                S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
+                S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
                 
                 cost = 2*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )*S[a, b]
                 if (cost <=0 or genrand_real2() < cost2D[cost/4]):
                     S[a, b] = -S[a, b]
 
-            #Ene0 = calcEnergy(S, N)                   # calculate the energy
+            Ene = calcEnergy(S, N)                   # calculate the energy
             for i in range(mcSteps):
                 a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
-                S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];
-                S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1];
+                S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
+                S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
 
                 cost = 2*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )*S[a, b]
                 if (cost <=0 or genrand_real2() < cost2D[cost/z]):
                     S[a, b] = -S[a, b]
-                    ##Ene1 = Ene0 + cost                   # calculate the energy
+                    Ene = Ene + cost                   # calculate the energy
                 
-                Ene = calcEnergy(S, N)# - Ene1           # calculate the energ
                 Mag = calcMag(S, N)                      # calculate the magnetization  
                 E1 = E1 + Ene
                 M1 = M1 + Mag
                 M2 = M2   + Mag*Mag ;
                 E2 = E2   + Ene*Ene;
                 
-            E[t] = E1/(mcSteps*N2)
-            M[t] = M1/(mcSteps*N2)
-            C[t] = ( E2/mcSteps - E1*E1/(mcSteps*mcSteps) )/(N*T[t]*T[t]);
-            X[t] = ( M2/mcSteps - M1*M1/(mcSteps*mcSteps) )/(N*T[t]*T[t]);
+            E[tt] = E1/(mcSteps*N2)
+            M[tt] = M1/(mcSteps*N2)
+            C[tt] = ( E2/mcSteps - E1*E1/(mcSteps*mcSteps) )/(N*T[tt]*T[tt]);
+            X[tt] = ( M2/mcSteps - M1*M1/(mcSteps*mcSteps) )/(N*T[tt]*T[tt]);
         return
 
 
@@ -174,7 +172,7 @@ cdef double calcEnergy(int [:, :] S, int N) nogil:
     cdef int i, j, site, nb
     for i in prange(1, N+1, nogil=True):
         for j in range(1, N+1):
-            S[0, j] = S[N, j];  S[i, 0] = S[i, N+1];
+            S[0, j] = S[N, j];  S[i, 0] = S[i, N];
             energy += -S[i, j] * (S[i-1, j] + S[i, j-1]) 
     return energy
 
