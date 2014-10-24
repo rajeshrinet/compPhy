@@ -44,13 +44,14 @@ cdef class Ising:
 
     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] T):
         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
-        cdef int i, a, b, tt, cost, z = 4, N2 = N*N
-        cdef double Ene, Mag, E1, M1, E2, M2, beta, Ene0, Ene1
+        cdef int i, a, b, tt, cost, z = 4, N2 = N*N, twoSite
+        cdef double Ene, Mag, E1, M1, E2, beta, Ene0, Ene1, 
+        cdef double oneByMCS = 1.0/mcSteps, oneByNs = 1.0/(N2)
         cdef long int seedval=time.time()
         cdef double [:] cost2D = self.cost2D
-        
+         
         for tt in range(nPoints):#, nogil=True):
-            E1 = E2 = M1 = M2 = 0
+            E1 = E2 = M1 = 0
             beta = 1/T[tt]
             cost2D[1] = exp(-4*beta)
             cost2D[2] = exp(-8*beta)
@@ -60,31 +61,36 @@ cdef class Ising:
                 S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
                 S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
                 
-                cost = 2*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )*S[a, b]
+                cost = 2*S[a, b]*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
                 if (cost <=0 or genrand_real2() < cost2D[cost/4]):
                     S[a, b] = -S[a, b]
 
             Ene = calcEnergy(S, N)                   # calculate the energy
+            Mag = calcMag(S, N)                      # calculate the magnetization  
             for i in range(mcSteps):
                 a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
                 S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
                 S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
-
-                cost = 2*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )*S[a, b]
+                twoSite = 2*S[a, b]
+                
+                cost = twoSite*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
                 if (cost <=0 or genrand_real2() < cost2D[cost/z]):
                     S[a, b] = -S[a, b]
                     Ene = Ene + cost                   # calculate the energy
+                    Mag = Mag - twoSite    
                 
-                Mag = calcMag(S, N)                      # calculate the magnetization  
                 E1 = E1 + Ene
                 M1 = M1 + Mag
-                M2 = M2   + Mag*Mag ;
-                E2 = E2   + Ene*Ene;
-                
-            E[tt] = E1/(mcSteps*N2)
-            M[tt] = M1/(mcSteps*N2)
-            C[tt] = ( E2/mcSteps - E1*E1/(mcSteps*mcSteps) )/(N*T[tt]*T[tt]);
-            X[tt] = ( M2/mcSteps - M1*M1/(mcSteps*mcSteps) )/(N*T[tt]*T[tt]);
+                E2 = E2 + calcEnergy(S, N)*calcEnergy(S, N);
+            
+            E1 = E1*oneByMCS
+            E2 = E2*oneByMCS
+            M1 = M1*oneByMCS*oneByNs
+
+            E[tt] = E1*oneByNs
+            M[tt] = M1
+            C[tt] = ( E2 - E1*E1 )*beta*beta*oneByNs;
+            X[tt] = ( 1.0 - M1*M1 )*beta;
         return
 
 

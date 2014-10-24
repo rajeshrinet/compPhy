@@ -7,8 +7,8 @@ import numpy as np
 import ising
 import matplotlib.pyplot as plt
 
-N, nPoints       = 32, 100
-eqSteps, mcSteps = 200, 1000
+N, nPoints       = 8, 100
+eqSteps, mcSteps = 2000000, 100000
 
 
 Energy        = np.zeros(nPoints)
@@ -17,7 +17,7 @@ SpecificHeat  = np.zeros(nPoints)
 Suseptibility  = np.zeros(nPoints)
 Spin = np.zeros((N+2, N+2), dtype=np.dtype("i"))
 
-Temp  = np.linspace(1, 4, nPoints)        #np.array([0.25, 0.11, 2, 4, 8, 10])
+Temp  = np.linspace(0.2, 5, nPoints)        #np.array([0.25, 0.11, 2, 4, 8, 10])
 
 
 #instantiate the class Ising model
