@@ -7,8 +7,8 @@ import numpy as np
 import ising
 import matplotlib.pyplot as plt
 
-N, nPoints       = 32, 32
-eqSteps, mcSteps = 700, 700
+N, nPoints       = 10, 64
+eqSteps, mcSteps = 10000, 1000000
 
 
 Energy        = np.zeros(nPoints)

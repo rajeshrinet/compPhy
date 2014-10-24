@@ -27,11 +27,13 @@ cdef extern from "../../c-cpp/utils/mt19937ar.c" nogil:
 @cython.nonecheck(False)
 cdef class Ising:
     cdef int Ns, eqSteps, mcSteps, nPoints
+    cdef readonly np.ndarray cost2D
     def __init__(self, Ns, nPoints, eqSteps, mcSteps):
         self.Ns      = Ns 
         self.nPoints = nPoints
         self.eqSteps = eqSteps
         self.mcSteps = mcSteps
+        self.cost2D  = np.empty(4, dtype=np.float)
 
         pass
     
@@ -41,31 +43,64 @@ cdef class Ising:
 
 
     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] T):
-        cdef int i, m, eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
-        cdef double Ene, Mag, E1, M1, E2, M2
+        cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
+        cdef int i, a, b, t, cost, z = 4, N2 = N*N
+        cdef double Ene, Mag, E1, M1, E2, M2, beta, Ene0, Ene1
         cdef long int seedval=time.time()
+        cdef double [:] cost2D = self.cost2D
         
-        for m in range(nPoints):#, nogil=True):
+        for t in range(nPoints):#, nogil=True):
             E1 = E2 = M1 = M2 = 0
+            beta = 1/T[t]
+            cost2D[1] = exp(-4*beta)
+            cost2D[2] = exp(-8*beta)
             initialstate(S, N, seedval)
-            equilibrate(S, 1.0/T[m], N, eqSteps)                 # This is to equilibrate the system
+            for i in range(eqSteps):
+                
+                a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
+                S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];  # ensuring BC
+                S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1];
+                
+                cost = 2*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )*S[a, b]
+                if (cost <=0 or genrand_real2() < cost2D[cost/4]):
+                    S[a, b] = -S[a, b]
 
-            for i in range(mcSteps):#, nogil=True):
-                mcmove(S, 1.0/T[m], N)                   # Monte Carlo moves
-                Ene = calcEnergy(S, N)                   # calculate the energy
+            #Ene0 = calcEnergy(S, N)                   # calculate the energy
+            for i in range(mcSteps):
+                a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
+                S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];
+                S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1];
+
+                cost = 2*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )*S[a, b]
+                if (cost <=0 or genrand_real2() < cost2D[cost/z]):
+                    S[a, b] = -S[a, b]
+                    ##Ene1 = Ene0 + cost                   # calculate the energy
+                
+                Ene = calcEnergy(S, N)# - Ene1           # calculate the energ
                 Mag = calcMag(S, N)                      # calculate the magnetization  
                 E1 = E1 + Ene
                 M1 = M1 + Mag
                 M2 = M2   + Mag*Mag ;
                 E2 = E2   + Ene*Ene;
-                    
-            E[m] = E1/(mcSteps*N*N)
-            M[m] = M1/(mcSteps*N*N)
-            C[m] = ( E2/mcSteps - E1*E1/(mcSteps*mcSteps) )/(N*T[m]*T[m]);
-            X[m] = ( M2/mcSteps - M1*M1/(mcSteps*mcSteps) )/(N*T[m]*T[m]);
+                
+            E[t] = E1/(mcSteps*N2)
+            M[t] = M1/(mcSteps*N2)
+            C[t] = ( E2/mcSteps - E1*E1/(mcSteps*mcSteps) )/(N*T[t]*T[t]);
+            X[t] = ( M2/mcSteps - M1*M1/(mcSteps*mcSteps) )/(N*T[t]*T[t]);
         return
 
 
+#
+#
+#
+#
+#
+#-------------------------------------------------------------------
+#
+#
+#
+#
+#
 #-------------------------------------------------------------------
 ### Functions block
 #-------------------------------------------------------------------
@@ -92,22 +127,17 @@ cdef int equilibrate(int [:, :] S, double beta, int N, int eqSteps) nogil:
     ''' equilibrate the system'''
     cdef int i, j, a, b, s, nb, cost, eq
     for eq in prange(eqSteps, nogil=True):
-        for i in range(1, N+1):
-            for j in range(1, N+1):            
-                    a = int(genrand_real2()*N)
-                    b = int(genrand_real2()*N)
-                    a = a + 1
-                    b = b + 1
-                    S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];
-                    S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1]
-                    nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
-                    cost = 2*nb*S[a, b]
-                    if cost < 0:    
-                        S[a, b] = -S[a, b]
-                    elif genrand_real2() < exp(-cost*beta):
-                        S[a, b] = -S[a, b]
-                    else:
-                        S[a, b] = S[a, b]
+        for i in range(N*N):
+            a = int(1 + genrand_real2()*N)
+            b = int(1 + genrand_real2()*N)
+            S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];
+            S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1]
+            nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
+            cost = 2*nb*S[a, b]
+            if cost < 0:    
+                S[a, b] = -S[a, b]
+            elif genrand_real2() < exp(-cost*beta):
+                S[a, b] = -S[a, b]
     return 0 
 
 
@@ -118,24 +148,19 @@ cdef int equilibrate(int [:, :] S, double beta, int N, int eqSteps) nogil:
 cdef int mcmove(int [:, :] S, double beta, int N) nogil:
     ''' Monte Carlo moves'''
     cdef int i, j, a, b, s, nb, cost 
-    for i in prange(1, N+1, nogil=True):
-        for j in range(1, N+1):            
-                a = int(genrand_real2()*N)
-                b = int(genrand_real2()*N)
-                a = a + 1
-                b = b + 1
-                S[0, b]   = S[N, b]
-                S[N+1, b] = S[0, b]
-                S[a, 0]   = S[a, N+1]
-                S[a, N+1] = S[a, 1]
-                nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
-                cost = 2*nb*S[a, b]
-                if cost < 0:    
-                    S[a, b] = -S[a, b]
-                elif genrand_real2() < exp(-cost*beta):
-                    S[a, b] = -S[a, b]
-                else:
-                    S[a, b] = S[a, b]
+    for i in range(N*N,):
+        a = int(1 + genrand_real2()*N)
+        b = int(1 + genrand_real2()*N)
+        S[0, b]   = S[N, b]
+        S[N+1, b] = S[0, b]
+        S[a, 0]   = S[a, N+1]
+        S[a, N+1] = S[a, 1]
+        nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
+        cost = 2*nb*S[a, b]
+        if cost < 0:    
+            S[a, b] = -S[a, b]
+        elif genrand_real2() < exp(-cost*beta):
+            S[a, b] = -S[a, b]
     return 0 
 
 
@@ -149,14 +174,9 @@ cdef double calcEnergy(int [:, :] S, int N) nogil:
     cdef int i, j, site, nb
     for i in prange(1, N+1, nogil=True):
         for j in range(1, N+1):
-            site = S[i,j]
-            S[0,   j] = S[N, j]
-            S[N+1, j] = S[0, j]
-            S[i, 0]   = S[i, N+1]
-            S[i, N+1] = S[i, 1]
-            nb = S[i+1, j] + S[i, j+1] + S[i-1, j] + S[i, j-1]
-            energy += -nb*site 
-    return energy/4. 
+            S[0, j] = S[N, j];  S[i, 0] = S[i, N+1];
+            energy += -S[i, j] * (S[i-1, j] + S[i, j-1]) 
+    return energy
 
 
 @cython.wraparound(False)
@@ -167,7 +187,7 @@ cdef double calcMag(int [:, :] S, int N) nogil:
     ''' magnetization of  the configuration'''
     cdef double mag = 0
     cdef int i, j,
-
+    
     for i in prange(1, N+1, nogil=True):
         for j in range(1, N+1):
             mag += S[i, j]
