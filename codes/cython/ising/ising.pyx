@@ -21,6 +21,8 @@ cdef extern from "../../c-cpp/utils/mt19937ar.h" nogil:
 cdef extern from "../../c-cpp/utils/mt19937ar.c" nogil:
     double genrand_real2()
     double init_genrand(unsigned long)
+
+
 @cython.wraparound(False)
 @cython.boundscheck(False)
 @cython.cdivision(True)
@@ -33,51 +35,54 @@ cdef class Ising:
         self.nPoints = nPoints
         self.eqSteps = eqSteps
         self.mcSteps = mcSteps
-        self.cost2D  = np.empty(4, dtype=np.float)
+        self.cost2D  = np.zeros((4), dtype=np.float64)
 
         pass
     
-    cpdef oneD(self, int    [:] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] T):
-        cIsing (&S[0], &E[0], &M[0], &C[0], &X[0], &T[0], self.nPoints, self.Ns, self.eqSteps, self.mcSteps)
+    cpdef oneD(self, int [:] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] B):
+        cIsing (&S[0], &E[0], &M[0], &C[0], &X[0], &B[0], self.nPoints, self.Ns, self.eqSteps, self.mcSteps)
         return 
 
 
-    cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] T):
+    cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] B):
         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
-        cdef int i, a, b, tt, cost, z = 4, N2 = N*N, twoSite
+        cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite
         cdef double Ene, Mag, E1, M1, E2, beta, Ene0, Ene1, 
         cdef double oneByMCS = 1.0/mcSteps, oneByNs = 1.0/(N2)
         cdef long int seedval=time.time()
         cdef double [:] cost2D = self.cost2D
          
+        init_genrand(seedval)
         for tt in range(nPoints):#, nogil=True):
             E1 = E2 = M1 = 0
-            beta = 1/T[tt]
-            cost2D[1] = exp(-4*beta)
-            cost2D[2] = exp(-8*beta)
-            initialstate(S, N, seedval)
+            beta = B[tt]
+            cost2D[1] = exp(-4.0*beta)
+            cost2D[2] = cost2D[1]*cost2D[1]
+            intialise(S, N)
             for i in range(eqSteps):
-                a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
-                S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
-                S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
-                
-                cost = 2*S[a, b]*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
-                if (cost <=0 or genrand_real2() < cost2D[cost/4]):
-                    S[a, b] = -S[a, b]
+                for ii in range(N2):
+                    a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
+                    S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
+                    S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
+                    
+                    cost = 2*S[a, b]*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
+                    if (cost <=0 or genrand_real2() < cost2D[cost/4]):
+                        S[a, b] = -S[a, b]
 
             Ene = calcEnergy(S, N)                   # calculate the energy
             Mag = calcMag(S, N)                      # calculate the magnetization  
             for i in range(mcSteps):
-                a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
-                S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
-                S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
-                twoSite = 2*S[a, b]
-                
-                cost = twoSite*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
-                if (cost <=0 or genrand_real2() < cost2D[cost/z]):
-                    S[a, b] = -S[a, b]
-                    Ene = Ene + cost                   # calculate the energy
-                    Mag = Mag - twoSite    
+                for ii in range(N2):
+                    a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
+                    S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
+                    S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
+                    twoSite = 2*S[a, b]
+                    
+                    cost = twoSite*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
+                    if (cost <=0 or genrand_real2() < cost2D[cost/z]):
+                        S[a, b] = -S[a, b]
+                        Ene = Ene + cost                   # calculate the energy
+                        Mag = Mag - twoSite    
                 
                 E1 = E1 + Ene
                 M1 = M1 + Mag
@@ -112,8 +117,7 @@ cdef class Ising:
 @cython.boundscheck(False)
 @cython.cdivision(True)
 @cython.nonecheck(False)
-cdef int initialstate(int [:, :] S, int N, long int seedval) nogil:    # generates a random spin Spin configuration
-    init_genrand(seedval)
+cdef int intialise(int [:, :] S, int N) nogil:    # generates a random spin Spin configuration
     for i in range(1, N+1):
         for j in range(1, N+1):
             if (genrand_real2()<0.5): 
