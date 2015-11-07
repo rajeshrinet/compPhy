@@ -46,8 +46,8 @@ cdef class Ising:
 
     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] B):
         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
-        cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite
-        cdef double Ene, Mag, E1, M1, E2, beta, Ene0, Ene1, 
+        cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite, Ene, Mag
+        cdef double E1, M1, E2, beta,  
         cdef double oneByMCS = 1.0/mcSteps, oneByNs = 1.0/(N2)
         cdef long int seedval=time.time()
         cdef double [:] cost2D = self.cost2D
@@ -56,7 +56,7 @@ cdef class Ising:
         for tt in range(nPoints):#, nogil=True):
             E1 = E2 = M1 = 0
             beta = B[tt]
-            cost2D[1] = exp(-4.0*beta)
+            cost2D[1] = exp(-z*beta)
             cost2D[2] = cost2D[1]*cost2D[1]
             intialise(S, N)
             for i in range(eqSteps):
@@ -66,7 +66,7 @@ cdef class Ising:
                     S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
                     
                     cost = 2*S[a, b]*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
-                    if (cost <=0 or genrand_real2() < cost2D[cost/4]):
+                    if (cost <=0 or genrand_real2() < cost2D[cost/z]):
                         S[a, b] = -S[a, b]
 
             Ene = calcEnergy(S, N)                   # calculate the energy
@@ -85,7 +85,7 @@ cdef class Ising:
                         Mag = Mag - twoSite    
                 
                 E1 = E1 + Ene
-                M1 = M1 + Mag
+                M1 = M1 + fabs(Mag)
                 E2 = E2 + calcEnergy(S, N)*calcEnergy(S, N);
             
             E1 = E1*oneByMCS
@@ -176,10 +176,9 @@ cdef int mcmove(int [:, :] S, double beta, int N) nogil:
 @cython.boundscheck(False)
 @cython.cdivision(True)
 @cython.nonecheck(False)
-cdef double calcEnergy(int [:, :] S, int N) nogil:
+cdef int calcEnergy(int [:, :] S, int N) nogil:
     ''' Energy calculation'''
-    cdef double energy = 0
-    cdef int i, j, site, nb
+    cdef int i, j, site, nb, energy = 0
     for i in prange(1, N+1, nogil=True):
         for j in range(1, N+1):
             S[0, j] = S[N, j];  S[i, 0] = S[i, N];
@@ -191,10 +190,9 @@ cdef double calcEnergy(int [:, :] S, int N) nogil:
 @cython.boundscheck(False)
 @cython.cdivision(True)
 @cython.nonecheck(False)
-cdef double calcMag(int [:, :] S, int N) nogil:                
+cdef int calcMag(int [:, :] S, int N) nogil:                
     ''' magnetization of  the configuration'''
-    cdef double mag = 0
-    cdef int i, j,
+    cdef int i, j, mag = 0
     
     for i in prange(1, N+1, nogil=True):
         for j in range(1, N+1):
