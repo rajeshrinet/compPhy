@@ -1,9 +1,8 @@
 ##compPhy
 
-Here you can find scripts written for our weekly computational physics meetings at Matscience and more!
+This is the repository for codes written on miscellaneous topic in physics. 
 
-
-You can also statically view some of the notebooks [here](http://nbviewer.ipython.org/github/rajeshrinet/compPhy/tree/master/codes/IPythonNotebooks/).
+Most of the codes are written in python. One can statically view some of the python notebooks [here](http://nbviewer.jupyter.org/github/rajeshrinet/compPhy/tree/master/codes/notebooks/).
 
 
 

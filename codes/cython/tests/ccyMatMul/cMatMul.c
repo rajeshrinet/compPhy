@@ -1,5 +1,5 @@
-#include "../../c-cpp/utils/mt19937ar.h"
-#include "../../c-cpp/utils/mt19937ar.c"
+#include "../../../c-cpp/utils/mt19937ar.h"
+#include "../../../c-cpp/utils/mt19937ar.c"
 
 void cMatMul(double* A, double* B, double* C, double scalar_k, int m, int n) {
 

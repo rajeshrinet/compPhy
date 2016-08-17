@@ -16,7 +16,7 @@ for i in np.arange(1):
     rm.B()
 
 
-N = 100000
+N = 40000
 
 x  = np.random.rand((N))
 y  = x*5
