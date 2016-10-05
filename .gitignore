@@ -1,5 +1,7 @@
 *.pyc
+stokes-notes.pdf
 *.so
+*.dat
 *.c
 *.html
 *.ipynb_checkpoints
@@ -7,6 +9,7 @@
 *.swp
 *.mat
 *.swo
+*.pov
 
 
 *.aux
@@ -25,6 +28,7 @@
 *-blx.bib
 *.run.xml
 build/
+*.lyx#
 
 ## Build tool auxiliary files:
 *.fdb_latexmk
@@ -70,4 +74,10 @@ build/
 
 *.tdo
 *.mat
-build/
+*.vtk
+*.vtu
+*.pvsm
+*.npz
+*.pvd
+build/ 
+.DS_Store

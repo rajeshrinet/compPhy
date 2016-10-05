@@ -2,7 +2,7 @@
 
 This is the repository for codes written on miscellaneous topic in physics. 
 
-Most of the codes are written in python. One can statically view some of the python notebooks [here](http://nbviewer.jupyter.org/github/rajeshrinet/compPhy/tree/master/codes/notebooks/).
+Ising model is simulated. Code to simulate asymmetric simple exclusion process (ASEP) is also included. It is useful to think of ASEP as the Ising model of nonequilibrium statistical mechanism. Thus, this repository contains code to simulate Ising models. We also have a class of codes for random walk. 
 
 
 
