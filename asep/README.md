@@ -1,4 +1,4 @@
-## Simulating the ASEP: Ising model l of Nonequilibrium Statistical Mechanics
+## Simulating the ASEP: Ising model of Nonequilibrium Statistical Mechanics
 Exclusion processes refer to a family of models of transport where particles have hard-core interaction.
 
 
