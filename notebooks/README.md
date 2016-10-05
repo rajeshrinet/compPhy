@@ -1,4 +1,4 @@
-Rendered Notebooks can be viewed [here](http://nbviewer.ipython.org/github/rajeshrinet/compPhy/tree/master/codes/IPythonNotebooks/).
+A collection of notebooks which includes example python code of miscellaneous topics in physics. 
 
 
 
