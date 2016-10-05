@@ -16,9 +16,9 @@ import time
 cdef extern void cIsing (int* S, double* E, double* M, double* C, double* X, double* T, int nPoints, int Nsites, int eqSteps, int mcSteps)
 cdef extern from "time.h" :
     pass
-cdef extern from "../../c-cpp/utils/mt19937ar.h" nogil:
+cdef extern from "../../../misc/mt19937ar.h" nogil:
     pass
-cdef extern from "../../c-cpp/utils/mt19937ar.c" nogil:
+cdef extern from "../../../misc/mt19937ar.c" nogil:
     double genrand_real2()
     double init_genrand(unsigned long)
 

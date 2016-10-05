@@ -11,10 +11,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>    // time()
-#include "../utils/mt19937ar.h"
-#include "../utils/mt19937ar.c"
+#include "../../misc/mt19937ar.h"
+#include "../../misc/mt19937ar.c"
 
-#define Ns 64
+#define Ns 16
 
 int main()
 {

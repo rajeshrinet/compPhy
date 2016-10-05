@@ -9,7 +9,7 @@ Cython.Compiler.Options.annotate = True
 
 ext_modules = [
     Extension("ising",
-              sources=["ising.pyx", "cIsing.c"],
+              sources=["core/ising.pyx", "core/cIsing.c"],
               include_dirs=[numpy.get_include()],
               extra_link_args=['-fopenmp'],
               libraries=[]), # Unix-like specific
