@@ -38,3 +38,4 @@ d d u =>  d u u  or   u u d =>  u d d   # change in energy is 4
    d             d               u             u 
 ---------------------------------------------
 
+Read more [here](http://rajeshrinet.github.io/blog/2014/ising-model/).

@@ -10,8 +10,8 @@
 #include<stdio.h>
 #include<math.h>
 #include<stdlib.h>
-#include "../misc/mt19937ar.h"
-#include "../misc/mt19937ar.c"
+#include "../../misc/mt19937ar.h"
+#include "../../misc/mt19937ar.c"
 #include <time.h>    // time()
 
 

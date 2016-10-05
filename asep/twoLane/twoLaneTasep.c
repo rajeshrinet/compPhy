@@ -11,8 +11,8 @@
 #include<math.h>
 #include<stdlib.h>
 #include <time.h>    // time()
-#include "../../../utils/mt19937ar.h"
-#include "../../../utils/mt19937ar.c"
+#include "../../misc/mt19937ar.h"
+#include "../../misc/mt19937ar.c"
 #define Ns 1000             // lattice size
 #define beta 0              // interaction parameter between lattices.
 
