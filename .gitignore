@@ -1,8 +1,5 @@
 *.pyc
-stokes-notes.pdf
 *.so
-*.dat
-*.c
 *.html
 *.ipynb_checkpoints
 *~
