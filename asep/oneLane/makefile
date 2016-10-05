@@ -1,4 +1,4 @@
-main=singleLaneTasep
+main=oneLaneTasep
 
 all: $(main)
 
