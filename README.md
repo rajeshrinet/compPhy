@@ -1,11 +1,11 @@
 ##compPhy
 
-Code on miscellaneous topics in physics. 
 
-Ising model is simulated. Code to simulate asymmetric simple exclusion process (ASEP) is also included. 
+* Simulation of the Ising model using the Metropolis algorithm 
 
+* Monte Carlo simulation of the asymmetric simple exclusion process (ASEP) 
 
-Also, included is a collection of notebooks which includes example python code of miscellaneous topics in physics. 
+* A collection of python notebooks on miscellaneous topics in physics 
 
 
 Comments and feedbacks are welcome.
