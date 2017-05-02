@@ -2500,7 +2500,7 @@ static PyObject *__pyx_pf_5ising_5Ising_2oneD(struct __pyx_obj_5ising_Ising *__p
  * 
  *     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] B):             # <<<<<<<<<<<<<<
  *         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
- *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite, Ene, Mag
+ *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite,
  */
 
 static PyObject *__pyx_pw_5ising_5Ising_5twoD(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
@@ -2518,16 +2518,17 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
   int __pyx_v_z;
   int __pyx_v_N2;
   int __pyx_v_twoSite;
-  int __pyx_v_Ene;
-  int __pyx_v_Mag;
   double __pyx_v_E1;
   double __pyx_v_M1;
   double __pyx_v_E2;
   double __pyx_v_beta;
-  double __pyx_v_oneByMCS;
-  double __pyx_v_oneByNs;
+  double __pyx_v_Ene;
+  double __pyx_v_Mag;
+  double __pyx_v_iMCS;
+  double __pyx_v_iNs;
   long __pyx_v_seedval;
   __Pyx_memviewslice __pyx_v_cost2D = { 0, 0, { 0 }, { 0 }, { 0 } };
+  PyObject *__pyx_v_M2 = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2622,7 +2623,8 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
   Py_ssize_t __pyx_t_90;
   Py_ssize_t __pyx_t_91;
   Py_ssize_t __pyx_t_92;
-  Py_ssize_t __pyx_t_93;
+  double __pyx_t_93;
+  Py_ssize_t __pyx_t_94;
   __Pyx_RefNannySetupContext("twoD", 0);
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
@@ -2702,8 +2704,8 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
  * 
  *     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] B):
  *         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints             # <<<<<<<<<<<<<<
- *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite, Ene, Mag
- *         cdef double E1, M1, E2, beta,
+ *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite,
+ *         cdef double E1, M1, E2, beta,  Ene, Mag
  */
   __pyx_t_13 = __pyx_v_self->eqSteps;
   __pyx_v_eqSteps = __pyx_t_13;
@@ -2717,26 +2719,26 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
   /* "ising.pyx":49
  *     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] B):
  *         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
- *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite, Ene, Mag             # <<<<<<<<<<<<<<
- *         cdef double E1, M1, E2, beta,
- *         cdef double oneByMCS = 1.0/mcSteps, oneByNs = 1.0/(N2)
+ *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite,             # <<<<<<<<<<<<<<
+ *         cdef double E1, M1, E2, beta,  Ene, Mag
+ *         cdef double iMCS = 1.0/mcSteps, iNs = 1.0/(N2)
  */
   __pyx_v_z = 4;
   __pyx_v_N2 = (__pyx_v_N * __pyx_v_N);
 
   /* "ising.pyx":51
- *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite, Ene, Mag
- *         cdef double E1, M1, E2, beta,
- *         cdef double oneByMCS = 1.0/mcSteps, oneByNs = 1.0/(N2)             # <<<<<<<<<<<<<<
+ *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite,
+ *         cdef double E1, M1, E2, beta,  Ene, Mag
+ *         cdef double iMCS = 1.0/mcSteps, iNs = 1.0/(N2)             # <<<<<<<<<<<<<<
  *         cdef long int seedval=time.time()
  *         cdef double [:] cost2D = self.cost2D
  */
-  __pyx_v_oneByMCS = (1.0 / __pyx_v_mcSteps);
-  __pyx_v_oneByNs = (1.0 / __pyx_v_N2);
+  __pyx_v_iMCS = (1.0 / __pyx_v_mcSteps);
+  __pyx_v_iNs = (1.0 / __pyx_v_N2);
 
   /* "ising.pyx":52
- *         cdef double E1, M1, E2, beta,
- *         cdef double oneByMCS = 1.0/mcSteps, oneByNs = 1.0/(N2)
+ *         cdef double E1, M1, E2, beta,  Ene, Mag
+ *         cdef double iMCS = 1.0/mcSteps, iNs = 1.0/(N2)
  *         cdef long int seedval=time.time()             # <<<<<<<<<<<<<<
  *         cdef double [:] cost2D = self.cost2D
  * 
@@ -2769,7 +2771,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
   __pyx_v_seedval = __pyx_t_14;
 
   /* "ising.pyx":53
- *         cdef double oneByMCS = 1.0/mcSteps, oneByNs = 1.0/(N2)
+ *         cdef double iMCS = 1.0/mcSteps, iNs = 1.0/(N2)
  *         cdef long int seedval=time.time()
  *         cdef double [:] cost2D = self.cost2D             # <<<<<<<<<<<<<<
  * 
@@ -2786,7 +2788,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
  * 
  *         init_genrand(seedval)             # <<<<<<<<<<<<<<
  *         for tt in range(nPoints):#, nogil=True):
- *             E1 = E2 = M1 = 0
+ *             E1 = E2 = M1 = M2= 0
  */
   init_genrand(__pyx_v_seedval);
 
@@ -2794,8 +2796,8 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
  * 
  *         init_genrand(seedval)
  *         for tt in range(nPoints):#, nogil=True):             # <<<<<<<<<<<<<<
- *             E1 = E2 = M1 = 0
- *             beta = B[tt]
+ *             E1 = E2 = M1 = M2= 0
+ *             Mag=0
  */
   __pyx_t_13 = __pyx_v_nPoints;
   for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_13; __pyx_t_16+=1) {
@@ -2804,17 +2806,28 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
     /* "ising.pyx":57
  *         init_genrand(seedval)
  *         for tt in range(nPoints):#, nogil=True):
- *             E1 = E2 = M1 = 0             # <<<<<<<<<<<<<<
+ *             E1 = E2 = M1 = M2= 0             # <<<<<<<<<<<<<<
+ *             Mag=0
  *             beta = B[tt]
- *             cost2D[1] = exp(-z*beta)
  */
     __pyx_v_E1 = 0.0;
     __pyx_v_E2 = 0.0;
     __pyx_v_M1 = 0.0;
+    __Pyx_INCREF(__pyx_int_0);
+    __Pyx_XDECREF_SET(__pyx_v_M2, __pyx_int_0);
 
     /* "ising.pyx":58
  *         for tt in range(nPoints):#, nogil=True):
- *             E1 = E2 = M1 = 0
+ *             E1 = E2 = M1 = M2= 0
+ *             Mag=0             # <<<<<<<<<<<<<<
+ *             beta = B[tt]
+ *             cost2D[1] = exp(-z*beta)
+ */
+    __pyx_v_Mag = 0.0;
+
+    /* "ising.pyx":59
+ *             E1 = E2 = M1 = M2= 0
+ *             Mag=0
  *             beta = B[tt]             # <<<<<<<<<<<<<<
  *             cost2D[1] = exp(-z*beta)
  *             cost2D[2] = cost2D[1]*cost2D[1]
@@ -2822,8 +2835,8 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
     __pyx_t_17 = __pyx_v_tt;
     __pyx_v_beta = (*((double *) ( /* dim=0 */ (__pyx_v_B.data + __pyx_t_17 * __pyx_v_B.strides[0]) )));
 
-    /* "ising.pyx":59
- *             E1 = E2 = M1 = 0
+    /* "ising.pyx":60
+ *             Mag=0
  *             beta = B[tt]
  *             cost2D[1] = exp(-z*beta)             # <<<<<<<<<<<<<<
  *             cost2D[2] = cost2D[1]*cost2D[1]
@@ -2832,7 +2845,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
     __pyx_t_18 = 1;
     *((double *) ( /* dim=0 */ (__pyx_v_cost2D.data + __pyx_t_18 * __pyx_v_cost2D.strides[0]) )) = exp(((-__pyx_v_z) * __pyx_v_beta));
 
-    /* "ising.pyx":60
+    /* "ising.pyx":61
  *             beta = B[tt]
  *             cost2D[1] = exp(-z*beta)
  *             cost2D[2] = cost2D[1]*cost2D[1]             # <<<<<<<<<<<<<<
@@ -2844,7 +2857,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
     __pyx_t_21 = 2;
     *((double *) ( /* dim=0 */ (__pyx_v_cost2D.data + __pyx_t_21 * __pyx_v_cost2D.strides[0]) )) = ((*((double *) ( /* dim=0 */ (__pyx_v_cost2D.data + __pyx_t_19 * __pyx_v_cost2D.strides[0]) ))) * (*((double *) ( /* dim=0 */ (__pyx_v_cost2D.data + __pyx_t_20 * __pyx_v_cost2D.strides[0]) ))));
 
-    /* "ising.pyx":61
+    /* "ising.pyx":62
  *             cost2D[1] = exp(-z*beta)
  *             cost2D[2] = cost2D[1]*cost2D[1]
  *             intialise(S, N)             # <<<<<<<<<<<<<<
@@ -2853,7 +2866,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
  */
     __pyx_f_5ising_intialise(__pyx_v_S, __pyx_v_N);
 
-    /* "ising.pyx":62
+    /* "ising.pyx":63
  *             cost2D[2] = cost2D[1]*cost2D[1]
  *             intialise(S, N)
  *             for i in range(eqSteps):             # <<<<<<<<<<<<<<
@@ -2864,7 +2877,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
     for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_22; __pyx_t_23+=1) {
       __pyx_v_i = __pyx_t_23;
 
-      /* "ising.pyx":63
+      /* "ising.pyx":64
  *             intialise(S, N)
  *             for i in range(eqSteps):
  *                 for ii in range(N2):             # <<<<<<<<<<<<<<
@@ -2875,7 +2888,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
       for (__pyx_t_25 = 0; __pyx_t_25 < __pyx_t_24; __pyx_t_25+=1) {
         __pyx_v_ii = __pyx_t_25;
 
-        /* "ising.pyx":64
+        /* "ising.pyx":65
  *             for i in range(eqSteps):
  *                 for ii in range(N2):
  *                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);             # <<<<<<<<<<<<<<
@@ -2885,7 +2898,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_v_a = ((int)(1.0 + (genrand_real2() * __pyx_v_N)));
         __pyx_v_b = ((int)(1.0 + (genrand_real2() * __pyx_v_N)));
 
-        /* "ising.pyx":65
+        /* "ising.pyx":66
  *                 for ii in range(N2):
  *                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
  *                     S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC             # <<<<<<<<<<<<<<
@@ -2903,7 +2916,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_t_33 = __pyx_v_b;
         *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_32 * __pyx_v_S.strides[0]) ) + __pyx_t_33 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_30 * __pyx_v_S.strides[0]) ) + __pyx_t_31 * __pyx_v_S.strides[1]) )));
 
-        /* "ising.pyx":66
+        /* "ising.pyx":67
  *                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
  *                     S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
  *                     S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];             # <<<<<<<<<<<<<<
@@ -2921,7 +2934,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_t_41 = (__pyx_v_N + 1);
         *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_40 * __pyx_v_S.strides[0]) ) + __pyx_t_41 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_38 * __pyx_v_S.strides[0]) ) + __pyx_t_39 * __pyx_v_S.strides[1]) )));
 
-        /* "ising.pyx":68
+        /* "ising.pyx":69
  *                     S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
  * 
  *                     cost = 2*S[a, b]*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )             # <<<<<<<<<<<<<<
@@ -2940,7 +2953,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_t_51 = (__pyx_v_b - 1);
         __pyx_v_cost = ((2 * (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_42 * __pyx_v_S.strides[0]) ) + __pyx_t_43 * __pyx_v_S.strides[1]) )))) * ((((*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_44 * __pyx_v_S.strides[0]) ) + __pyx_t_45 * __pyx_v_S.strides[1]) ))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_46 * __pyx_v_S.strides[0]) ) + __pyx_t_47 * __pyx_v_S.strides[1]) )))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_48 * __pyx_v_S.strides[0]) ) + __pyx_t_49 * __pyx_v_S.strides[1]) )))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_50 * __pyx_v_S.strides[0]) ) + __pyx_t_51 * __pyx_v_S.strides[1]) )))));
 
-        /* "ising.pyx":69
+        /* "ising.pyx":70
  * 
  *                     cost = 2*S[a, b]*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
  *                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):             # <<<<<<<<<<<<<<
@@ -2959,12 +2972,12 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_L10_bool_binop_done:;
         if (__pyx_t_52) {
 
-          /* "ising.pyx":70
+          /* "ising.pyx":71
  *                     cost = 2*S[a, b]*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
  *                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):
  *                         S[a, b] = -S[a, b]             # <<<<<<<<<<<<<<
  * 
- *             Ene = calcEnergy(S, N)                   # calculate the energy
+ *             for i in range(mcSteps):
  */
           __pyx_t_55 = __pyx_v_a;
           __pyx_t_56 = __pyx_v_b;
@@ -2972,7 +2985,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
           __pyx_t_58 = __pyx_v_b;
           *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_57 * __pyx_v_S.strides[0]) ) + __pyx_t_58 * __pyx_v_S.strides[1]) )) = (-(*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_55 * __pyx_v_S.strides[0]) ) + __pyx_t_56 * __pyx_v_S.strides[1]) ))));
 
-          /* "ising.pyx":69
+          /* "ising.pyx":70
  * 
  *                     cost = 2*S[a, b]*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
  *                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):             # <<<<<<<<<<<<<<
@@ -2983,27 +2996,9 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
       }
     }
 
-    /* "ising.pyx":72
+    /* "ising.pyx":73
  *                         S[a, b] = -S[a, b]
  * 
- *             Ene = calcEnergy(S, N)                   # calculate the energy             # <<<<<<<<<<<<<<
- *             Mag = calcMag(S, N)                      # calculate the magnetization
- *             for i in range(mcSteps):
- */
-    __pyx_v_Ene = __pyx_f_5ising_calcEnergy(__pyx_v_S, __pyx_v_N);
-
-    /* "ising.pyx":73
- * 
- *             Ene = calcEnergy(S, N)                   # calculate the energy
- *             Mag = calcMag(S, N)                      # calculate the magnetization             # <<<<<<<<<<<<<<
- *             for i in range(mcSteps):
- *                 for ii in range(N2):
- */
-    __pyx_v_Mag = __pyx_f_5ising_calcMag(__pyx_v_S, __pyx_v_N);
-
-    /* "ising.pyx":74
- *             Ene = calcEnergy(S, N)                   # calculate the energy
- *             Mag = calcMag(S, N)                      # calculate the magnetization
  *             for i in range(mcSteps):             # <<<<<<<<<<<<<<
  *                 for ii in range(N2):
  *                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
@@ -3012,8 +3007,8 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
     for (__pyx_t_23 = 0; __pyx_t_23 < __pyx_t_22; __pyx_t_23+=1) {
       __pyx_v_i = __pyx_t_23;
 
-      /* "ising.pyx":75
- *             Mag = calcMag(S, N)                      # calculate the magnetization
+      /* "ising.pyx":74
+ * 
  *             for i in range(mcSteps):
  *                 for ii in range(N2):             # <<<<<<<<<<<<<<
  *                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
@@ -3023,7 +3018,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
       for (__pyx_t_25 = 0; __pyx_t_25 < __pyx_t_24; __pyx_t_25+=1) {
         __pyx_v_ii = __pyx_t_25;
 
-        /* "ising.pyx":76
+        /* "ising.pyx":75
  *             for i in range(mcSteps):
  *                 for ii in range(N2):
  *                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);             # <<<<<<<<<<<<<<
@@ -3033,7 +3028,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_v_a = ((int)(1.0 + (genrand_real2() * __pyx_v_N)));
         __pyx_v_b = ((int)(1.0 + (genrand_real2() * __pyx_v_N)));
 
-        /* "ising.pyx":77
+        /* "ising.pyx":76
  *                 for ii in range(N2):
  *                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
  *                     S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC             # <<<<<<<<<<<<<<
@@ -3051,7 +3046,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_t_66 = __pyx_v_b;
         *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_65 * __pyx_v_S.strides[0]) ) + __pyx_t_66 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_63 * __pyx_v_S.strides[0]) ) + __pyx_t_64 * __pyx_v_S.strides[1]) )));
 
-        /* "ising.pyx":78
+        /* "ising.pyx":77
  *                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
  *                     S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
  *                     S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];             # <<<<<<<<<<<<<<
@@ -3069,7 +3064,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_t_74 = (__pyx_v_N + 1);
         *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_73 * __pyx_v_S.strides[0]) ) + __pyx_t_74 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_71 * __pyx_v_S.strides[0]) ) + __pyx_t_72 * __pyx_v_S.strides[1]) )));
 
-        /* "ising.pyx":79
+        /* "ising.pyx":78
  *                     S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
  *                     S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
  *                     twoSite = 2*S[a, b]             # <<<<<<<<<<<<<<
@@ -3080,7 +3075,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_t_76 = __pyx_v_b;
         __pyx_v_twoSite = (2 * (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_75 * __pyx_v_S.strides[0]) ) + __pyx_t_76 * __pyx_v_S.strides[1]) ))));
 
-        /* "ising.pyx":81
+        /* "ising.pyx":80
  *                     twoSite = 2*S[a, b]
  * 
  *                     cost = twoSite*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )             # <<<<<<<<<<<<<<
@@ -3097,12 +3092,12 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_t_84 = (__pyx_v_b - 1);
         __pyx_v_cost = (__pyx_v_twoSite * ((((*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_77 * __pyx_v_S.strides[0]) ) + __pyx_t_78 * __pyx_v_S.strides[1]) ))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_79 * __pyx_v_S.strides[0]) ) + __pyx_t_80 * __pyx_v_S.strides[1]) )))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_81 * __pyx_v_S.strides[0]) ) + __pyx_t_82 * __pyx_v_S.strides[1]) )))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_83 * __pyx_v_S.strides[0]) ) + __pyx_t_84 * __pyx_v_S.strides[1]) )))));
 
-        /* "ising.pyx":82
+        /* "ising.pyx":81
  * 
  *                     cost = twoSite*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
  *                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):             # <<<<<<<<<<<<<<
  *                         S[a, b] = -S[a, b]
- *                         Ene = Ene + cost                   # calculate the energy
+ * 
  */
         __pyx_t_53 = ((__pyx_v_cost <= 0) != 0);
         if (!__pyx_t_53) {
@@ -3116,12 +3111,12 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
         __pyx_L17_bool_binop_done:;
         if (__pyx_t_52) {
 
-          /* "ising.pyx":83
+          /* "ising.pyx":82
  *                     cost = twoSite*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
  *                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):
  *                         S[a, b] = -S[a, b]             # <<<<<<<<<<<<<<
- *                         Ene = Ene + cost                   # calculate the energy
- *                         Mag = Mag - twoSite
+ * 
+ *                 Ene = calcEnergy(S, N)
  */
           __pyx_t_86 = __pyx_v_a;
           __pyx_t_87 = __pyx_v_b;
@@ -3129,133 +3124,146 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
           __pyx_t_89 = __pyx_v_b;
           *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_88 * __pyx_v_S.strides[0]) ) + __pyx_t_89 * __pyx_v_S.strides[1]) )) = (-(*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_86 * __pyx_v_S.strides[0]) ) + __pyx_t_87 * __pyx_v_S.strides[1]) ))));
 
-          /* "ising.pyx":84
- *                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):
- *                         S[a, b] = -S[a, b]
- *                         Ene = Ene + cost                   # calculate the energy             # <<<<<<<<<<<<<<
- *                         Mag = Mag - twoSite
- * 
- */
-          __pyx_v_Ene = (__pyx_v_Ene + __pyx_v_cost);
-
-          /* "ising.pyx":85
- *                         S[a, b] = -S[a, b]
- *                         Ene = Ene + cost                   # calculate the energy
- *                         Mag = Mag - twoSite             # <<<<<<<<<<<<<<
- * 
- *                 E1 = E1 + Ene
- */
-          __pyx_v_Mag = (__pyx_v_Mag - __pyx_v_twoSite);
-
-          /* "ising.pyx":82
+          /* "ising.pyx":81
  * 
  *                     cost = twoSite*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
  *                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):             # <<<<<<<<<<<<<<
  *                         S[a, b] = -S[a, b]
- *                         Ene = Ene + cost                   # calculate the energy
+ * 
  */
         }
       }
 
-      /* "ising.pyx":87
- *                         Mag = Mag - twoSite
+      /* "ising.pyx":84
+ *                         S[a, b] = -S[a, b]
  * 
+ *                 Ene = calcEnergy(S, N)             # <<<<<<<<<<<<<<
+ *                 Mag = calcMag(S,    N)
+ *                 E1 = E1 + Ene
+ */
+      __pyx_v_Ene = __pyx_f_5ising_calcEnergy(__pyx_v_S, __pyx_v_N);
+
+      /* "ising.pyx":85
+ * 
+ *                 Ene = calcEnergy(S, N)
+ *                 Mag = calcMag(S,    N)             # <<<<<<<<<<<<<<
+ *                 E1 = E1 + Ene
+ *                 M1 = M1 + Mag
+ */
+      __pyx_v_Mag = __pyx_f_5ising_calcMag(__pyx_v_S, __pyx_v_N);
+
+      /* "ising.pyx":86
+ *                 Ene = calcEnergy(S, N)
+ *                 Mag = calcMag(S,    N)
  *                 E1 = E1 + Ene             # <<<<<<<<<<<<<<
- *                 M1 = M1 + fabs(Mag)
- *                 E2 = E2 + calcEnergy(S, N)*calcEnergy(S, N);
+ *                 M1 = M1 + Mag
+ *                 E2 = E2 + Ene*Ene
  */
       __pyx_v_E1 = (__pyx_v_E1 + __pyx_v_Ene);
 
-      /* "ising.pyx":88
- * 
+      /* "ising.pyx":87
+ *                 Mag = calcMag(S,    N)
  *                 E1 = E1 + Ene
- *                 M1 = M1 + fabs(Mag)             # <<<<<<<<<<<<<<
- *                 E2 = E2 + calcEnergy(S, N)*calcEnergy(S, N);
+ *                 M1 = M1 + Mag             # <<<<<<<<<<<<<<
+ *                 E2 = E2 + Ene*Ene
+ *                 M2 = M2 + Mag*Mag
+ */
+      __pyx_v_M1 = (__pyx_v_M1 + __pyx_v_Mag);
+
+      /* "ising.pyx":88
+ *                 E1 = E1 + Ene
+ *                 M1 = M1 + Mag
+ *                 E2 = E2 + Ene*Ene             # <<<<<<<<<<<<<<
+ *                 M2 = M2 + Mag*Mag
  * 
  */
-      __pyx_v_M1 = (__pyx_v_M1 + fabs(__pyx_v_Mag));
+      __pyx_v_E2 = (__pyx_v_E2 + (__pyx_v_Ene * __pyx_v_Ene));
 
       /* "ising.pyx":89
- *                 E1 = E1 + Ene
- *                 M1 = M1 + fabs(Mag)
- *                 E2 = E2 + calcEnergy(S, N)*calcEnergy(S, N);             # <<<<<<<<<<<<<<
+ *                 M1 = M1 + Mag
+ *                 E2 = E2 + Ene*Ene
+ *                 M2 = M2 + Mag*Mag             # <<<<<<<<<<<<<<
  * 
- *             E1 = E1*oneByMCS
+ *             E[tt] = E1*iMCS*iNs
  */
-      __pyx_v_E2 = (__pyx_v_E2 + (__pyx_f_5ising_calcEnergy(__pyx_v_S, __pyx_v_N) * __pyx_f_5ising_calcEnergy(__pyx_v_S, __pyx_v_N)));
+      __pyx_t_1 = PyFloat_FromDouble((__pyx_v_Mag * __pyx_v_Mag)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_9 = PyNumber_Add(__pyx_v_M2, __pyx_t_1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 89, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_9);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF_SET(__pyx_v_M2, __pyx_t_9);
+      __pyx_t_9 = 0;
     }
 
     /* "ising.pyx":91
- *                 E2 = E2 + calcEnergy(S, N)*calcEnergy(S, N);
+ *                 M2 = M2 + Mag*Mag
  * 
- *             E1 = E1*oneByMCS             # <<<<<<<<<<<<<<
- *             E2 = E2*oneByMCS
- *             M1 = M1*oneByMCS*oneByNs
+ *             E[tt] = E1*iMCS*iNs             # <<<<<<<<<<<<<<
+ *             M[tt] = M1*iMCS*iNs
+ *             C[tt] = (E2*iMCS - E1*E1*iMCS*iMCS)*beta*beta*iNs;
  */
-    __pyx_v_E1 = (__pyx_v_E1 * __pyx_v_oneByMCS);
+    __pyx_t_90 = __pyx_v_tt;
+    *((double *) ( /* dim=0 */ (__pyx_v_E.data + __pyx_t_90 * __pyx_v_E.strides[0]) )) = ((__pyx_v_E1 * __pyx_v_iMCS) * __pyx_v_iNs);
 
     /* "ising.pyx":92
  * 
- *             E1 = E1*oneByMCS
- *             E2 = E2*oneByMCS             # <<<<<<<<<<<<<<
- *             M1 = M1*oneByMCS*oneByNs
- * 
- */
-    __pyx_v_E2 = (__pyx_v_E2 * __pyx_v_oneByMCS);
-
-    /* "ising.pyx":93
- *             E1 = E1*oneByMCS
- *             E2 = E2*oneByMCS
- *             M1 = M1*oneByMCS*oneByNs             # <<<<<<<<<<<<<<
- * 
- *             E[tt] = E1*oneByNs
- */
-    __pyx_v_M1 = ((__pyx_v_M1 * __pyx_v_oneByMCS) * __pyx_v_oneByNs);
-
-    /* "ising.pyx":95
- *             M1 = M1*oneByMCS*oneByNs
- * 
- *             E[tt] = E1*oneByNs             # <<<<<<<<<<<<<<
- *             M[tt] = M1
- *             C[tt] = ( E2 - E1*E1 )*beta*beta*oneByNs;
- */
-    __pyx_t_90 = __pyx_v_tt;
-    *((double *) ( /* dim=0 */ (__pyx_v_E.data + __pyx_t_90 * __pyx_v_E.strides[0]) )) = (__pyx_v_E1 * __pyx_v_oneByNs);
-
-    /* "ising.pyx":96
- * 
- *             E[tt] = E1*oneByNs
- *             M[tt] = M1             # <<<<<<<<<<<<<<
- *             C[tt] = ( E2 - E1*E1 )*beta*beta*oneByNs;
- *             X[tt] = ( 1.0 - M1*M1 )*beta;
+ *             E[tt] = E1*iMCS*iNs
+ *             M[tt] = M1*iMCS*iNs             # <<<<<<<<<<<<<<
+ *             C[tt] = (E2*iMCS - E1*E1*iMCS*iMCS)*beta*beta*iNs;
+ *             X[tt] = (M2*iMCS - M1*M1*iMCS*iMCS)*beta*iNs;
  */
     __pyx_t_91 = __pyx_v_tt;
-    *((double *) ( /* dim=0 */ (__pyx_v_M.data + __pyx_t_91 * __pyx_v_M.strides[0]) )) = __pyx_v_M1;
+    *((double *) ( /* dim=0 */ (__pyx_v_M.data + __pyx_t_91 * __pyx_v_M.strides[0]) )) = ((__pyx_v_M1 * __pyx_v_iMCS) * __pyx_v_iNs);
 
-    /* "ising.pyx":97
- *             E[tt] = E1*oneByNs
- *             M[tt] = M1
- *             C[tt] = ( E2 - E1*E1 )*beta*beta*oneByNs;             # <<<<<<<<<<<<<<
- *             X[tt] = ( 1.0 - M1*M1 )*beta;
+    /* "ising.pyx":93
+ *             E[tt] = E1*iMCS*iNs
+ *             M[tt] = M1*iMCS*iNs
+ *             C[tt] = (E2*iMCS - E1*E1*iMCS*iMCS)*beta*beta*iNs;             # <<<<<<<<<<<<<<
+ *             X[tt] = (M2*iMCS - M1*M1*iMCS*iMCS)*beta*iNs;
  *         return
  */
     __pyx_t_92 = __pyx_v_tt;
-    *((double *) ( /* dim=0 */ (__pyx_v_C.data + __pyx_t_92 * __pyx_v_C.strides[0]) )) = ((((__pyx_v_E2 - (__pyx_v_E1 * __pyx_v_E1)) * __pyx_v_beta) * __pyx_v_beta) * __pyx_v_oneByNs);
+    *((double *) ( /* dim=0 */ (__pyx_v_C.data + __pyx_t_92 * __pyx_v_C.strides[0]) )) = (((((__pyx_v_E2 * __pyx_v_iMCS) - (((__pyx_v_E1 * __pyx_v_E1) * __pyx_v_iMCS) * __pyx_v_iMCS)) * __pyx_v_beta) * __pyx_v_beta) * __pyx_v_iNs);
 
-    /* "ising.pyx":98
- *             M[tt] = M1
- *             C[tt] = ( E2 - E1*E1 )*beta*beta*oneByNs;
- *             X[tt] = ( 1.0 - M1*M1 )*beta;             # <<<<<<<<<<<<<<
+    /* "ising.pyx":94
+ *             M[tt] = M1*iMCS*iNs
+ *             C[tt] = (E2*iMCS - E1*E1*iMCS*iMCS)*beta*beta*iNs;
+ *             X[tt] = (M2*iMCS - M1*M1*iMCS*iMCS)*beta*iNs;             # <<<<<<<<<<<<<<
  *         return
  * 
  */
-    __pyx_t_93 = __pyx_v_tt;
-    *((double *) ( /* dim=0 */ (__pyx_v_X.data + __pyx_t_93 * __pyx_v_X.strides[0]) )) = ((1.0 - (__pyx_v_M1 * __pyx_v_M1)) * __pyx_v_beta);
+    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_iMCS); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_1 = PyNumber_Multiply(__pyx_v_M2, __pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __pyx_t_9 = PyFloat_FromDouble((((__pyx_v_M1 * __pyx_v_M1) * __pyx_v_iMCS) * __pyx_v_iMCS)); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_t_9); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_beta); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_1 = PyNumber_Multiply(__pyx_t_2, __pyx_t_9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_iNs); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_9);
+    __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, __pyx_t_9); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+    __pyx_t_93 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_93 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 94, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_94 = __pyx_v_tt;
+    *((double *) ( /* dim=0 */ (__pyx_v_X.data + __pyx_t_94 * __pyx_v_X.strides[0]) )) = __pyx_t_93;
   }
 
-  /* "ising.pyx":99
- *             C[tt] = ( E2 - E1*E1 )*beta*beta*oneByNs;
- *             X[tt] = ( 1.0 - M1*M1 )*beta;
+  /* "ising.pyx":95
+ *             C[tt] = (E2*iMCS - E1*E1*iMCS*iMCS)*beta*beta*iNs;
+ *             X[tt] = (M2*iMCS - M1*M1*iMCS*iMCS)*beta*iNs;
  *         return             # <<<<<<<<<<<<<<
  * 
  * 
@@ -3269,7 +3277,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
  * 
  *     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] B):             # <<<<<<<<<<<<<<
  *         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
- *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite, Ene, Mag
+ *         cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite,
  */
 
   /* function exit code */
@@ -3290,6 +3298,7 @@ static PyObject *__pyx_f_5ising_5Ising_twoD(struct __pyx_obj_5ising_Ising *__pyx
   __pyx_r = 0;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_cost2D, 1);
+  __Pyx_XDECREF(__pyx_v_M2);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -3461,7 +3470,7 @@ static PyObject *__pyx_pf_5ising_5Ising_6cost2D___get__(struct __pyx_obj_5ising_
   return __pyx_r;
 }
 
-/* "ising.pyx":120
+/* "ising.pyx":116
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int intialise(int [:, :] S, int N) nogil:    # generates a random spin Spin configuration             # <<<<<<<<<<<<<<
@@ -3483,7 +3492,7 @@ static int __pyx_f_5ising_intialise(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N)
   Py_ssize_t __pyx_t_8;
   Py_ssize_t __pyx_t_9;
 
-  /* "ising.pyx":121
+  /* "ising.pyx":117
  * @cython.nonecheck(False)
  * cdef int intialise(int [:, :] S, int N) nogil:    # generates a random spin Spin configuration
  *     for i in range(1, N+1):             # <<<<<<<<<<<<<<
@@ -3494,7 +3503,7 @@ static int __pyx_f_5ising_intialise(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N)
   for (__pyx_t_2 = 1; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "ising.pyx":122
+    /* "ising.pyx":118
  * cdef int intialise(int [:, :] S, int N) nogil:    # generates a random spin Spin configuration
  *     for i in range(1, N+1):
  *         for j in range(1, N+1):             # <<<<<<<<<<<<<<
@@ -3505,7 +3514,7 @@ static int __pyx_f_5ising_intialise(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N)
     for (__pyx_t_4 = 1; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
       __pyx_v_j = __pyx_t_4;
 
-      /* "ising.pyx":123
+      /* "ising.pyx":119
  *     for i in range(1, N+1):
  *         for j in range(1, N+1):
  *             if (genrand_real2()<0.5):             # <<<<<<<<<<<<<<
@@ -3515,7 +3524,7 @@ static int __pyx_f_5ising_intialise(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N)
       __pyx_t_5 = ((genrand_real2() < 0.5) != 0);
       if (__pyx_t_5) {
 
-        /* "ising.pyx":124
+        /* "ising.pyx":120
  *         for j in range(1, N+1):
  *             if (genrand_real2()<0.5):
  *                 S[i, j]=-1             # <<<<<<<<<<<<<<
@@ -3526,7 +3535,7 @@ static int __pyx_f_5ising_intialise(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N)
         __pyx_t_7 = __pyx_v_j;
         *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_6 * __pyx_v_S.strides[0]) ) + __pyx_t_7 * __pyx_v_S.strides[1]) )) = -1;
 
-        /* "ising.pyx":123
+        /* "ising.pyx":119
  *     for i in range(1, N+1):
  *         for j in range(1, N+1):
  *             if (genrand_real2()<0.5):             # <<<<<<<<<<<<<<
@@ -3536,7 +3545,7 @@ static int __pyx_f_5ising_intialise(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N)
         goto __pyx_L7;
       }
 
-      /* "ising.pyx":126
+      /* "ising.pyx":122
  *                 S[i, j]=-1
  *             else:
  *                 S[i, j]=1             # <<<<<<<<<<<<<<
@@ -3552,7 +3561,7 @@ static int __pyx_f_5ising_intialise(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N)
     }
   }
 
-  /* "ising.pyx":127
+  /* "ising.pyx":123
  *             else:
  *                 S[i, j]=1
  *     return 0             # <<<<<<<<<<<<<<
@@ -3562,7 +3571,7 @@ static int __pyx_f_5ising_intialise(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N)
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "ising.pyx":120
+  /* "ising.pyx":116
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int intialise(int [:, :] S, int N) nogil:    # generates a random spin Spin configuration             # <<<<<<<<<<<<<<
@@ -3575,7 +3584,7 @@ static int __pyx_f_5ising_intialise(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N)
   return __pyx_r;
 }
 
-/* "ising.pyx":134
+/* "ising.pyx":130
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int equilibrate(int [:, :] S, double beta, int N, int eqSteps) nogil:             # <<<<<<<<<<<<<<
@@ -3632,7 +3641,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
   Py_ssize_t __pyx_t_39;
   Py_ssize_t __pyx_t_40;
 
-  /* "ising.pyx":137
+  /* "ising.pyx":133
  *     ''' equilibrate the system'''
  *     cdef int i, j, a, b, s, nb, cost, eq
  *     for eq in prange(eqSteps, nogil=True):             # <<<<<<<<<<<<<<
@@ -3674,7 +3683,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                             __pyx_v_i = ((int)0xbad0bad0);
                             __pyx_v_nb = ((int)0xbad0bad0);
 
-                            /* "ising.pyx":138
+                            /* "ising.pyx":134
  *     cdef int i, j, a, b, s, nb, cost, eq
  *     for eq in prange(eqSteps, nogil=True):
  *         for i in range(N*N):             # <<<<<<<<<<<<<<
@@ -3685,7 +3694,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                             for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
                               __pyx_v_i = __pyx_t_5;
 
-                              /* "ising.pyx":139
+                              /* "ising.pyx":135
  *     for eq in prange(eqSteps, nogil=True):
  *         for i in range(N*N):
  *             a = int(1 + genrand_real2()*N)             # <<<<<<<<<<<<<<
@@ -3694,7 +3703,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
  */
                               __pyx_v_a = ((int)(1.0 + (genrand_real2() * __pyx_v_N)));
 
-                              /* "ising.pyx":140
+                              /* "ising.pyx":136
  *         for i in range(N*N):
  *             a = int(1 + genrand_real2()*N)
  *             b = int(1 + genrand_real2()*N)             # <<<<<<<<<<<<<<
@@ -3703,7 +3712,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
  */
                               __pyx_v_b = ((int)(1.0 + (genrand_real2() * __pyx_v_N)));
 
-                              /* "ising.pyx":141
+                              /* "ising.pyx":137
  *             a = int(1 + genrand_real2()*N)
  *             b = int(1 + genrand_real2()*N)
  *             S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];             # <<<<<<<<<<<<<<
@@ -3721,7 +3730,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                               __pyx_t_13 = __pyx_v_b;
                               *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_12 * __pyx_v_S.strides[0]) ) + __pyx_t_13 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_10 * __pyx_v_S.strides[0]) ) + __pyx_t_11 * __pyx_v_S.strides[1]) )));
 
-                              /* "ising.pyx":142
+                              /* "ising.pyx":138
  *             b = int(1 + genrand_real2()*N)
  *             S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];
  *             S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1]             # <<<<<<<<<<<<<<
@@ -3739,7 +3748,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                               __pyx_t_21 = (__pyx_v_N + 1);
                               *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_20 * __pyx_v_S.strides[0]) ) + __pyx_t_21 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_18 * __pyx_v_S.strides[0]) ) + __pyx_t_19 * __pyx_v_S.strides[1]) )));
 
-                              /* "ising.pyx":143
+                              /* "ising.pyx":139
  *             S[0, b]   = S[N, b];    S[N+1, b] = S[0, b];
  *             S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1]
  *             nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]             # <<<<<<<<<<<<<<
@@ -3756,7 +3765,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                               __pyx_t_29 = (__pyx_v_b - 1);
                               __pyx_v_nb = ((((*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_22 * __pyx_v_S.strides[0]) ) + __pyx_t_23 * __pyx_v_S.strides[1]) ))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_24 * __pyx_v_S.strides[0]) ) + __pyx_t_25 * __pyx_v_S.strides[1]) )))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_26 * __pyx_v_S.strides[0]) ) + __pyx_t_27 * __pyx_v_S.strides[1]) )))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_28 * __pyx_v_S.strides[0]) ) + __pyx_t_29 * __pyx_v_S.strides[1]) ))));
 
-                              /* "ising.pyx":144
+                              /* "ising.pyx":140
  *             S[a, 0]   = S[a, N+1];  S[a, N+1] = S[a, 1]
  *             nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
  *             cost = 2*nb*S[a, b]             # <<<<<<<<<<<<<<
@@ -3767,7 +3776,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                               __pyx_t_31 = __pyx_v_b;
                               __pyx_v_cost = ((2 * __pyx_v_nb) * (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_30 * __pyx_v_S.strides[0]) ) + __pyx_t_31 * __pyx_v_S.strides[1]) ))));
 
-                              /* "ising.pyx":145
+                              /* "ising.pyx":141
  *             nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
  *             cost = 2*nb*S[a, b]
  *             if cost < 0:             # <<<<<<<<<<<<<<
@@ -3777,7 +3786,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                               __pyx_t_32 = ((__pyx_v_cost < 0) != 0);
                               if (__pyx_t_32) {
 
-                                /* "ising.pyx":146
+                                /* "ising.pyx":142
  *             cost = 2*nb*S[a, b]
  *             if cost < 0:
  *                 S[a, b] = -S[a, b]             # <<<<<<<<<<<<<<
@@ -3790,7 +3799,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                                 __pyx_t_36 = __pyx_v_b;
                                 *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_35 * __pyx_v_S.strides[0]) ) + __pyx_t_36 * __pyx_v_S.strides[1]) )) = (-(*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_33 * __pyx_v_S.strides[0]) ) + __pyx_t_34 * __pyx_v_S.strides[1]) ))));
 
-                                /* "ising.pyx":145
+                                /* "ising.pyx":141
  *             nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
  *             cost = 2*nb*S[a, b]
  *             if cost < 0:             # <<<<<<<<<<<<<<
@@ -3800,7 +3809,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                                 goto __pyx_L12;
                               }
 
-                              /* "ising.pyx":147
+                              /* "ising.pyx":143
  *             if cost < 0:
  *                 S[a, b] = -S[a, b]
  *             elif genrand_real2() < exp(-cost*beta):             # <<<<<<<<<<<<<<
@@ -3810,7 +3819,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                               __pyx_t_32 = ((genrand_real2() < exp(((-__pyx_v_cost) * __pyx_v_beta))) != 0);
                               if (__pyx_t_32) {
 
-                                /* "ising.pyx":148
+                                /* "ising.pyx":144
  *                 S[a, b] = -S[a, b]
  *             elif genrand_real2() < exp(-cost*beta):
  *                 S[a, b] = -S[a, b]             # <<<<<<<<<<<<<<
@@ -3823,7 +3832,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
                                 __pyx_t_40 = __pyx_v_b;
                                 *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_39 * __pyx_v_S.strides[0]) ) + __pyx_t_40 * __pyx_v_S.strides[1]) )) = (-(*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_37 * __pyx_v_S.strides[0]) ) + __pyx_t_38 * __pyx_v_S.strides[1]) ))));
 
-                                /* "ising.pyx":147
+                                /* "ising.pyx":143
  *             if cost < 0:
  *                 S[a, b] = -S[a, b]
  *             elif genrand_real2() < exp(-cost*beta):             # <<<<<<<<<<<<<<
@@ -3846,7 +3855,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
         #endif
       }
 
-      /* "ising.pyx":137
+      /* "ising.pyx":133
  *     ''' equilibrate the system'''
  *     cdef int i, j, a, b, s, nb, cost, eq
  *     for eq in prange(eqSteps, nogil=True):             # <<<<<<<<<<<<<<
@@ -3864,7 +3873,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
       }
   }
 
-  /* "ising.pyx":149
+  /* "ising.pyx":145
  *             elif genrand_real2() < exp(-cost*beta):
  *                 S[a, b] = -S[a, b]
  *     return 0             # <<<<<<<<<<<<<<
@@ -3874,7 +3883,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "ising.pyx":134
+  /* "ising.pyx":130
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int equilibrate(int [:, :] S, double beta, int N, int eqSteps) nogil:             # <<<<<<<<<<<<<<
@@ -3887,7 +3896,7 @@ static int __pyx_f_5ising_equilibrate(__Pyx_memviewslice __pyx_v_S, double __pyx
   return __pyx_r;
 }
 
-/* "ising.pyx":156
+/* "ising.pyx":152
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int mcmove(int [:, :] S, double beta, int N) nogil:             # <<<<<<<<<<<<<<
@@ -3940,7 +3949,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
   Py_ssize_t __pyx_t_36;
   Py_ssize_t __pyx_t_37;
 
-  /* "ising.pyx":159
+  /* "ising.pyx":155
  *     ''' Monte Carlo moves'''
  *     cdef int i, j, a, b, s, nb, cost
  *     for i in range(N*N,):             # <<<<<<<<<<<<<<
@@ -3951,7 +3960,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
   for (__pyx_t_2 = 0; __pyx_t_2 < __pyx_t_1; __pyx_t_2+=1) {
     __pyx_v_i = __pyx_t_2;
 
-    /* "ising.pyx":160
+    /* "ising.pyx":156
  *     cdef int i, j, a, b, s, nb, cost
  *     for i in range(N*N,):
  *         a = int(1 + genrand_real2()*N)             # <<<<<<<<<<<<<<
@@ -3960,7 +3969,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
  */
     __pyx_v_a = ((int)(1.0 + (genrand_real2() * __pyx_v_N)));
 
-    /* "ising.pyx":161
+    /* "ising.pyx":157
  *     for i in range(N*N,):
  *         a = int(1 + genrand_real2()*N)
  *         b = int(1 + genrand_real2()*N)             # <<<<<<<<<<<<<<
@@ -3969,7 +3978,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
  */
     __pyx_v_b = ((int)(1.0 + (genrand_real2() * __pyx_v_N)));
 
-    /* "ising.pyx":162
+    /* "ising.pyx":158
  *         a = int(1 + genrand_real2()*N)
  *         b = int(1 + genrand_real2()*N)
  *         S[0, b]   = S[N, b]             # <<<<<<<<<<<<<<
@@ -3982,7 +3991,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
     __pyx_t_6 = __pyx_v_b;
     *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_5 * __pyx_v_S.strides[0]) ) + __pyx_t_6 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_3 * __pyx_v_S.strides[0]) ) + __pyx_t_4 * __pyx_v_S.strides[1]) )));
 
-    /* "ising.pyx":163
+    /* "ising.pyx":159
  *         b = int(1 + genrand_real2()*N)
  *         S[0, b]   = S[N, b]
  *         S[N+1, b] = S[0, b]             # <<<<<<<<<<<<<<
@@ -3995,7 +4004,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
     __pyx_t_10 = __pyx_v_b;
     *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_9 * __pyx_v_S.strides[0]) ) + __pyx_t_10 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_7 * __pyx_v_S.strides[0]) ) + __pyx_t_8 * __pyx_v_S.strides[1]) )));
 
-    /* "ising.pyx":164
+    /* "ising.pyx":160
  *         S[0, b]   = S[N, b]
  *         S[N+1, b] = S[0, b]
  *         S[a, 0]   = S[a, N+1]             # <<<<<<<<<<<<<<
@@ -4008,7 +4017,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
     __pyx_t_14 = 0;
     *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_13 * __pyx_v_S.strides[0]) ) + __pyx_t_14 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_11 * __pyx_v_S.strides[0]) ) + __pyx_t_12 * __pyx_v_S.strides[1]) )));
 
-    /* "ising.pyx":165
+    /* "ising.pyx":161
  *         S[N+1, b] = S[0, b]
  *         S[a, 0]   = S[a, N+1]
  *         S[a, N+1] = S[a, 1]             # <<<<<<<<<<<<<<
@@ -4021,7 +4030,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
     __pyx_t_18 = (__pyx_v_N + 1);
     *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_17 * __pyx_v_S.strides[0]) ) + __pyx_t_18 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_15 * __pyx_v_S.strides[0]) ) + __pyx_t_16 * __pyx_v_S.strides[1]) )));
 
-    /* "ising.pyx":166
+    /* "ising.pyx":162
  *         S[a, 0]   = S[a, N+1]
  *         S[a, N+1] = S[a, 1]
  *         nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]             # <<<<<<<<<<<<<<
@@ -4038,7 +4047,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
     __pyx_t_26 = (__pyx_v_b - 1);
     __pyx_v_nb = ((((*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_19 * __pyx_v_S.strides[0]) ) + __pyx_t_20 * __pyx_v_S.strides[1]) ))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_21 * __pyx_v_S.strides[0]) ) + __pyx_t_22 * __pyx_v_S.strides[1]) )))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_23 * __pyx_v_S.strides[0]) ) + __pyx_t_24 * __pyx_v_S.strides[1]) )))) + (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_25 * __pyx_v_S.strides[0]) ) + __pyx_t_26 * __pyx_v_S.strides[1]) ))));
 
-    /* "ising.pyx":167
+    /* "ising.pyx":163
  *         S[a, N+1] = S[a, 1]
  *         nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
  *         cost = 2*nb*S[a, b]             # <<<<<<<<<<<<<<
@@ -4049,7 +4058,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
     __pyx_t_28 = __pyx_v_b;
     __pyx_v_cost = ((2 * __pyx_v_nb) * (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_27 * __pyx_v_S.strides[0]) ) + __pyx_t_28 * __pyx_v_S.strides[1]) ))));
 
-    /* "ising.pyx":168
+    /* "ising.pyx":164
  *         nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
  *         cost = 2*nb*S[a, b]
  *         if cost < 0:             # <<<<<<<<<<<<<<
@@ -4059,7 +4068,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
     __pyx_t_29 = ((__pyx_v_cost < 0) != 0);
     if (__pyx_t_29) {
 
-      /* "ising.pyx":169
+      /* "ising.pyx":165
  *         cost = 2*nb*S[a, b]
  *         if cost < 0:
  *             S[a, b] = -S[a, b]             # <<<<<<<<<<<<<<
@@ -4072,7 +4081,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
       __pyx_t_33 = __pyx_v_b;
       *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_32 * __pyx_v_S.strides[0]) ) + __pyx_t_33 * __pyx_v_S.strides[1]) )) = (-(*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_30 * __pyx_v_S.strides[0]) ) + __pyx_t_31 * __pyx_v_S.strides[1]) ))));
 
-      /* "ising.pyx":168
+      /* "ising.pyx":164
  *         nb = S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1]
  *         cost = 2*nb*S[a, b]
  *         if cost < 0:             # <<<<<<<<<<<<<<
@@ -4082,7 +4091,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
       goto __pyx_L5;
     }
 
-    /* "ising.pyx":170
+    /* "ising.pyx":166
  *         if cost < 0:
  *             S[a, b] = -S[a, b]
  *         elif genrand_real2() < exp(-cost*beta):             # <<<<<<<<<<<<<<
@@ -4092,7 +4101,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
     __pyx_t_29 = ((genrand_real2() < exp(((-__pyx_v_cost) * __pyx_v_beta))) != 0);
     if (__pyx_t_29) {
 
-      /* "ising.pyx":171
+      /* "ising.pyx":167
  *             S[a, b] = -S[a, b]
  *         elif genrand_real2() < exp(-cost*beta):
  *             S[a, b] = -S[a, b]             # <<<<<<<<<<<<<<
@@ -4105,7 +4114,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
       __pyx_t_37 = __pyx_v_b;
       *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_36 * __pyx_v_S.strides[0]) ) + __pyx_t_37 * __pyx_v_S.strides[1]) )) = (-(*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_34 * __pyx_v_S.strides[0]) ) + __pyx_t_35 * __pyx_v_S.strides[1]) ))));
 
-      /* "ising.pyx":170
+      /* "ising.pyx":166
  *         if cost < 0:
  *             S[a, b] = -S[a, b]
  *         elif genrand_real2() < exp(-cost*beta):             # <<<<<<<<<<<<<<
@@ -4116,7 +4125,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
     __pyx_L5:;
   }
 
-  /* "ising.pyx":172
+  /* "ising.pyx":168
  *         elif genrand_real2() < exp(-cost*beta):
  *             S[a, b] = -S[a, b]
  *     return 0             # <<<<<<<<<<<<<<
@@ -4126,7 +4135,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
   __pyx_r = 0;
   goto __pyx_L0;
 
-  /* "ising.pyx":156
+  /* "ising.pyx":152
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int mcmove(int [:, :] S, double beta, int N) nogil:             # <<<<<<<<<<<<<<
@@ -4139,7 +4148,7 @@ static int __pyx_f_5ising_mcmove(__Pyx_memviewslice __pyx_v_S, double __pyx_v_be
   return __pyx_r;
 }
 
-/* "ising.pyx":179
+/* "ising.pyx":175
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int calcEnergy(int [:, :] S, int N) nogil:             # <<<<<<<<<<<<<<
@@ -4172,7 +4181,7 @@ static int __pyx_f_5ising_calcEnergy(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
 
-  /* "ising.pyx":181
+  /* "ising.pyx":177
  * cdef int calcEnergy(int [:, :] S, int N) nogil:
  *     ''' Energy calculation'''
  *     cdef int i, j, site, nb, energy = 0             # <<<<<<<<<<<<<<
@@ -4181,7 +4190,7 @@ static int __pyx_f_5ising_calcEnergy(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N
  */
   __pyx_v_energy = 0;
 
-  /* "ising.pyx":182
+  /* "ising.pyx":178
  *     ''' Energy calculation'''
  *     cdef int i, j, site, nb, energy = 0
  *     for i in prange(1, N+1, nogil=True):             # <<<<<<<<<<<<<<
@@ -4219,7 +4228,7 @@ static int __pyx_f_5ising_calcEnergy(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N
                             /* Initialize private variables to invalid values */
                             __pyx_v_j = ((int)0xbad0bad0);
 
-                            /* "ising.pyx":183
+                            /* "ising.pyx":179
  *     cdef int i, j, site, nb, energy = 0
  *     for i in prange(1, N+1, nogil=True):
  *         for j in range(1, N+1):             # <<<<<<<<<<<<<<
@@ -4230,7 +4239,7 @@ static int __pyx_f_5ising_calcEnergy(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N
                             for (__pyx_t_5 = 1; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
                               __pyx_v_j = __pyx_t_5;
 
-                              /* "ising.pyx":184
+                              /* "ising.pyx":180
  *     for i in prange(1, N+1, nogil=True):
  *         for j in range(1, N+1):
  *             S[0, j] = S[N, j];  S[i, 0] = S[i, N];             # <<<<<<<<<<<<<<
@@ -4248,7 +4257,7 @@ static int __pyx_f_5ising_calcEnergy(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N
                               __pyx_t_13 = 0;
                               *((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_12 * __pyx_v_S.strides[0]) ) + __pyx_t_13 * __pyx_v_S.strides[1]) )) = (*((int *) ( /* dim=1 */ (( /* dim=0 */ (__pyx_v_S.data + __pyx_t_10 * __pyx_v_S.strides[0]) ) + __pyx_t_11 * __pyx_v_S.strides[1]) )));
 
-                              /* "ising.pyx":185
+                              /* "ising.pyx":181
  *         for j in range(1, N+1):
  *             S[0, j] = S[N, j];  S[i, 0] = S[i, N];
  *             energy += -S[i, j] * (S[i-1, j] + S[i, j-1])             # <<<<<<<<<<<<<<
@@ -4276,7 +4285,7 @@ static int __pyx_f_5ising_calcEnergy(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N
         #endif
       }
 
-      /* "ising.pyx":182
+      /* "ising.pyx":178
  *     ''' Energy calculation'''
  *     cdef int i, j, site, nb, energy = 0
  *     for i in prange(1, N+1, nogil=True):             # <<<<<<<<<<<<<<
@@ -4294,7 +4303,7 @@ static int __pyx_f_5ising_calcEnergy(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N
       }
   }
 
-  /* "ising.pyx":186
+  /* "ising.pyx":182
  *             S[0, j] = S[N, j];  S[i, 0] = S[i, N];
  *             energy += -S[i, j] * (S[i-1, j] + S[i, j-1])
  *     return energy             # <<<<<<<<<<<<<<
@@ -4304,7 +4313,7 @@ static int __pyx_f_5ising_calcEnergy(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N
   __pyx_r = __pyx_v_energy;
   goto __pyx_L0;
 
-  /* "ising.pyx":179
+  /* "ising.pyx":175
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int calcEnergy(int [:, :] S, int N) nogil:             # <<<<<<<<<<<<<<
@@ -4317,7 +4326,7 @@ static int __pyx_f_5ising_calcEnergy(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N
   return __pyx_r;
 }
 
-/* "ising.pyx":193
+/* "ising.pyx":189
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int calcMag(int [:, :] S, int N) nogil:             # <<<<<<<<<<<<<<
@@ -4338,7 +4347,7 @@ static int __pyx_f_5ising_calcMag(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N) {
   Py_ssize_t __pyx_t_6;
   Py_ssize_t __pyx_t_7;
 
-  /* "ising.pyx":195
+  /* "ising.pyx":191
  * cdef int calcMag(int [:, :] S, int N) nogil:
  *     ''' magnetization of  the configuration'''
  *     cdef int i, j, mag = 0             # <<<<<<<<<<<<<<
@@ -4347,7 +4356,7 @@ static int __pyx_f_5ising_calcMag(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N) {
  */
   __pyx_v_mag = 0;
 
-  /* "ising.pyx":197
+  /* "ising.pyx":193
  *     cdef int i, j, mag = 0
  * 
  *     for i in prange(1, N+1, nogil=True):             # <<<<<<<<<<<<<<
@@ -4385,7 +4394,7 @@ static int __pyx_f_5ising_calcMag(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N) {
                             /* Initialize private variables to invalid values */
                             __pyx_v_j = ((int)0xbad0bad0);
 
-                            /* "ising.pyx":198
+                            /* "ising.pyx":194
  * 
  *     for i in prange(1, N+1, nogil=True):
  *         for j in range(1, N+1):             # <<<<<<<<<<<<<<
@@ -4396,7 +4405,7 @@ static int __pyx_f_5ising_calcMag(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N) {
                             for (__pyx_t_5 = 1; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
                               __pyx_v_j = __pyx_t_5;
 
-                              /* "ising.pyx":199
+                              /* "ising.pyx":195
  *     for i in prange(1, N+1, nogil=True):
  *         for j in range(1, N+1):
  *             mag += S[i, j]             # <<<<<<<<<<<<<<
@@ -4420,7 +4429,7 @@ static int __pyx_f_5ising_calcMag(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N) {
         #endif
       }
 
-      /* "ising.pyx":197
+      /* "ising.pyx":193
  *     cdef int i, j, mag = 0
  * 
  *     for i in prange(1, N+1, nogil=True):             # <<<<<<<<<<<<<<
@@ -4438,7 +4447,7 @@ static int __pyx_f_5ising_calcMag(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N) {
       }
   }
 
-  /* "ising.pyx":200
+  /* "ising.pyx":196
  *         for j in range(1, N+1):
  *             mag += S[i, j]
  *     return mag             # <<<<<<<<<<<<<<
@@ -4448,7 +4457,7 @@ static int __pyx_f_5ising_calcMag(__Pyx_memviewslice __pyx_v_S, int __pyx_v_N) {
   __pyx_r = __pyx_v_mag;
   goto __pyx_L0;
 
-  /* "ising.pyx":193
+  /* "ising.pyx":189
  * @cython.cdivision(True)
  * @cython.nonecheck(False)
  * cdef int calcMag(int [:, :] S, int N) nogil:             # <<<<<<<<<<<<<<

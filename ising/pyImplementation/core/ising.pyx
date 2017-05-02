@@ -46,15 +46,16 @@ cdef class Ising:
 
     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] B):
         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
-        cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite, Ene, Mag
-        cdef double E1, M1, E2, beta,  
-        cdef double oneByMCS = 1.0/mcSteps, oneByNs = 1.0/(N2)
+        cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite, 
+        cdef double E1, M1, E2, beta,  Ene, Mag
+        cdef double iMCS = 1.0/mcSteps, iNs = 1.0/(N2)
         cdef long int seedval=time.time()
         cdef double [:] cost2D = self.cost2D
          
         init_genrand(seedval)
         for tt in range(nPoints):#, nogil=True):
-            E1 = E2 = M1 = 0
+            E1 = E2 = M1 = M2= 0
+            Mag=0
             beta = B[tt]
             cost2D[1] = exp(-z*beta)
             cost2D[2] = cost2D[1]*cost2D[1]
@@ -69,8 +70,6 @@ cdef class Ising:
                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):
                         S[a, b] = -S[a, b]
 
-            Ene = calcEnergy(S, N)                   # calculate the energy
-            Mag = calcMag(S, N)                      # calculate the magnetization  
             for i in range(mcSteps):
                 for ii in range(N2):
                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
@@ -81,21 +80,18 @@ cdef class Ising:
                     cost = twoSite*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):
                         S[a, b] = -S[a, b]
-                        Ene = Ene + cost                   # calculate the energy
-                        Mag = Mag - twoSite    
                 
+                Ene = calcEnergy(S, N)
+                Mag = calcMag(S,    N)
                 E1 = E1 + Ene
-                M1 = M1 + fabs(Mag)
-                E2 = E2 + calcEnergy(S, N)*calcEnergy(S, N);
+                M1 = M1 + Mag
+                E2 = E2 + Ene*Ene
+                M2 = M2 + Mag*Mag
             
-            E1 = E1*oneByMCS
-            E2 = E2*oneByMCS
-            M1 = M1*oneByMCS*oneByNs
-
-            E[tt] = E1*oneByNs
-            M[tt] = M1
-            C[tt] = ( E2 - E1*E1 )*beta*beta*oneByNs;
-            X[tt] = ( 1.0 - M1*M1 )*beta;
+            E[tt] = E1*iMCS*iNs 
+            M[tt] = M1*iMCS*iNs 
+            C[tt] = (E2*iMCS - E1*E1*iMCS*iMCS)*beta*beta*iNs;
+            X[tt] = (M2*iMCS - M1*M1*iMCS*iMCS)*beta*iNs;
         return
 
 
