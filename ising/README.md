@@ -1,17 +1,16 @@
 ## Simulating the Ising model
 
-In the codes we simulate the Ising model in different dimension using the Metropolis algorithm.
+Here we simulate the Ising model in one and two dimension using the Metropolis algorithm.
 
+The main steps of Metropolis algorithm are:
 
-Metropolis algorithm.
-
-1. Prepare an initial  configuration of N spins
+1. Prepare an initial configuration of N spins
 2. Flip the spin of a randomly chosen lattice site. 
 3. Calculate the change in energy dE. 
 4. If dE < 0, accept the move. Otherwise accept the move with probability exp^{-dE/T}. This satisfies the detailed balance condition, ensuring a final equilibrium state. 
 5. Repeat 2-4.
 
-##One dimension
+## One dimension
 There is no phase transition in one dimension for an equilibrium system. But our code show a 
 phase transition. This is because the Metropolis algorithm is not very accurate near T=0. This can be understood as follows
 
@@ -19,7 +18,7 @@ If T is very small then the probability to accept the move which does not favor 
 
 So this spurious behaviour, observed in simulation, in 1D is an artifact of the algorithm.
 
-##Two dimension 
+## Two dimension
 A small trick can be done to optimally calculate the dE in 2D. Lets assume that spin S[i, j]  is flipped, then only the nearest neighbor spins  will account for a change in energy. There are two ways to calculate dE:
   
 * First way is the simplest- take the exponential of the change in energy. Remember calculating the exponential N^2 times for each Monte Carlo move can get expensive!
