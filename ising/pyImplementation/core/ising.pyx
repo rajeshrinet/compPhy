@@ -46,7 +46,7 @@ cdef class Ising:
 
     cpdef twoD(self, int [:, :] S, double [:] E, double [:] M, double [:] C, double [:] X, double [:] B):
         cdef int eqSteps = self.eqSteps, mcSteps = self.mcSteps, N = self.Ns, nPoints = self.nPoints
-        cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N, twoSite, 
+        cdef int i, ii, a, b, tt, cost, z = 4, N2 = N*N,  
         cdef double E1, M1, E2, beta,  Ene, Mag
         cdef double iMCS = 1.0/mcSteps, iNs = 1.0/(N2)
         cdef long int seedval=time.time()
@@ -60,6 +60,8 @@ cdef class Ising:
             cost2D[1] = exp(-z*beta)
             cost2D[2] = cost2D[1]*cost2D[1]
             intialise(S, N)
+
+            # first make sure that the system reaches equilibrium
             for i in range(eqSteps):
                 for ii in range(N2):
                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
@@ -70,14 +72,14 @@ cdef class Ising:
                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):
                         S[a, b] = -S[a, b]
 
+            # now make the measurements  
             for i in range(mcSteps):
                 for ii in range(N2):
                     a = int(1 + genrand_real2()*N);  b = int(1 + genrand_real2()*N);
                     S[0, b]   = S[N, b];  S[N+1, b] = S[1, b];  # ensuring BC
                     S[a, 0]   = S[a, N];  S[a, N+1] = S[a, 1];
-                    twoSite = 2*S[a, b]
                     
-                    cost = twoSite*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
+                    cost = 2*S[a, b]*( S[a+1, b] + S[a, b+1] + S[a-1, b] + S[a, b-1] )
                     if (cost <=0 or genrand_real2() < cost2D[cost/z]):
                         S[a, b] = -S[a, b]
                 

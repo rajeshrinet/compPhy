@@ -7,21 +7,23 @@ import numpy as np
 import ising
 import matplotlib.pyplot as plt
 
-N, nPoints       = 16, 128
-eqSteps, mcSteps = 2000, 2000
+N, NP       = 16, 512
+eqSteps, mcSteps = 8000, 8000
 
 
-Energy        = np.zeros((nPoints), dtype=np.float64)
-Magnetization = np.zeros((nPoints), dtype=np.float64)
-SpecificHeat  = np.zeros((nPoints), dtype=np.float64)
-Suseptibility = np.zeros((nPoints), dtype=np.float64)
+Temperature   = np.zeros((NP), dtype=np.float64)
+Energy        = np.zeros((NP), dtype=np.float64)
+Magnetization = np.zeros((NP), dtype=np.float64)
+SpecificHeat  = np.zeros((NP), dtype=np.float64)
+Suseptibility = np.zeros((NP), dtype=np.float64)
 Spin          = np.zeros((N+2,N+2), dtype=np.int32  )
 
-Beta  = np.linspace(0.25, 1, nPoints)        #np.array([0.25, 0.11, 2, 4, 8, 10])
-Temperature = 1.0/Beta
+#Temperature
+Temperature = np.linspace(1.0, 4, NP)
+Beta = 1.0/Temperature   # set k_B = 1
 
 #instantiate the class Ising model
-Ising = ising.Ising(N, nPoints, eqSteps, mcSteps)
+Ising = ising.Ising(N, NP, eqSteps, mcSteps)
 
 Ising.twoD(Spin, Energy, Magnetization, SpecificHeat, Suseptibility, Beta)
 
