@@ -1,5 +1,8 @@
 compPhy
 ========
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/rajeshrinet/compPhy/master?filepath=notebooks)
+
+
 This repository has an assortment of codes for model systems in physics. 
 In particular, some representative models of statistical physics are included.
 For example,
