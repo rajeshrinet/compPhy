@@ -7,3 +7,4 @@ dependencies:
   - matplotlib
   - cython
   - scipy
+  - scikits
