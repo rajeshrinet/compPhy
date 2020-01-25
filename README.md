@@ -1,4 +1,4 @@
-compPhy: Models of statistical physics in python [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/rajeshrinet/compPhy/master?filepath=notebooks)
+compPhy: Models of computational physics in python [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/rajeshrinet/compPhy/master?filepath=notebooks)
 ========
 
 
