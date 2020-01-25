@@ -6,7 +6,7 @@ If a randomly chosen particle can hop to right and left with same probability, t
 #### One lane
 A randomly chosen particle on a 1D lattice will move to its neighbouring site if it is empty with a rate 1. 
 
-#### Two lanes: 
+#### Two lanes
 The above one lane model can be studied with two parallel lanes. Here the rate of hopping to a neighbouring empty site is affected by the occupancy of the other lane. There is no inter-lane hopping in this model.
 
 
