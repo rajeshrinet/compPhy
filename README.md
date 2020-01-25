@@ -1,6 +1,5 @@
-compPhy
+compPhy: Models of statistical physics in python [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/rajeshrinet/compPhy/master?filepath=notebooks)
 ========
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/rajeshrinet/compPhy/master?filepath=notebooks)
 
 
 This repository has an assortment of codes for model systems in physics. 
@@ -13,8 +12,6 @@ For example,
 
 * Python notebooks on miscellaneous topics of physics
 
-
-Comments and feedbacks are welcome.
 
 
 
