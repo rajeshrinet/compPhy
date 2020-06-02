@@ -7,7 +7,7 @@
 ![Notebooks](https://github.com/rajeshrinet/compPhy/workflows/Notebooks/badge.svg)
 
 
-This repository has an assortment of codes for model systems in physics. 
+This repository has an assortment of codes for model systems in computational physics. 
 In particular, some representative models of statistical physics are included.
 For example,
 
