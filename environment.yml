@@ -6,4 +6,3 @@ dependencies:
   - numpy
   - matplotlib
   - scipy 
-  - scikits.bvp_solver
