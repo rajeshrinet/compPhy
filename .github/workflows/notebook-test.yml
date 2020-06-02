@@ -1,0 +1,23 @@
+name: Notebooks
+
+on: push
+
+jobs:
+
+  build-and-test:
+    name: notebooks
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Setup Miniconda
+        uses: goanpeca/setup-miniconda@v1.2.0
+        with:
+         activate-environment: pystokes
+         environment-file: environment.yml
+         # auto-activate-base: true
+      - name: testing-notebooks
+        shell: bash -l {0}
+        run: |
+          cd notebooks && python testNotebooks.py --path notebooks 
