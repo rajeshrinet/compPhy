@@ -6,3 +6,5 @@ dependencies:
   - numpy
   - matplotlib
   - scipy 
+  - ipython
+  - nbconvert
