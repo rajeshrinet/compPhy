@@ -14,7 +14,7 @@ jobs:
       - name: Setup Miniconda
         uses: goanpeca/setup-miniconda@v1.2.0
         with:
-         activate-environment: pystokes
+         activate-environment: conda
          environment-file: environment.yml
          # auto-activate-base: true
       - name: testing-notebooks
