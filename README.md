@@ -1,10 +1,9 @@
-## CompPhy: Computational physics in python 
+## CompPhy: Computational physics in python [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/rajeshrinet/compPhy/master?filepath=notebooks)
 
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/rajeshrinet/compPhy/master?filepath=notebooks)
+![Notebooks](https://github.com/rajeshrinet/compPhy/workflows/Notebooks/badge.svg)
 ![License](https://img.shields.io/github/license/rajeshrinet/compPhy) 
 ![Stars](https://img.shields.io/github/stars/rajeshrinet/compPhy) 
 ![Forks](https://img.shields.io/github/forks/rajeshrinet/compPhy) 
-![Notebooks](https://github.com/rajeshrinet/compPhy/workflows/Notebooks/badge.svg)
 
 
 This repository has an assortment of codes for model systems in computational physics. 
