@@ -23,11 +23,10 @@ def run_notebook_tests(path, recursive=False):
                    os.path.join(cwd, '2014/Cython.ipynb'),
                    os.path.join(cwd, '2014/DataAnalysis.ipynb'),
                    os.path.join(cwd, '2014/ODEs.ipynb'),
-                   os.path.join(cwd, '2016/gray-scott.ipynb'),
-                   os.path.join(cwd, '2017/SDE.ipynb'),
-                   os.path.join(cwd, '2017/SDE-II.ipynb'),
-                   os.path.join(cwd, '2016/random-walk.ipynb'),
                    os.path.join(cwd, '2014/NumpyMatplotlib.ipynb'),
+                   os.path.join(cwd, '2016/gray-scott.ipynb'),
+                   os.path.join(cwd, '2016/SDE.ipynb'),
+                   os.path.join(cwd, '2016/random-walk.ipynb'),
                     ]
 
     for ignored_book in ignore_list:
